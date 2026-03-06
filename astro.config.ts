@@ -1,6 +1,7 @@
 import { defineConfig, envField, fontProviders } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
+import remarkMath from "remark-math";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import {
