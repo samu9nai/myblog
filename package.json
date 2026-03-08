@@ -19,7 +19,7 @@
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.18.0",
     "dayjs": "^1.11.19",
-    "katex": "^0.16.35",
+    "katex": "^0.16.37",
     "lodash.kebabcase": "^4.1.1",
     "rehype-katex": "^7.0.1",
     "remark-collapse": "^0.1.2",
@@ -37,7 +37,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@types/lodash.kebabcase": "^4.1.9",
     "@typescript-eslint/parser": "^8.56.1",
-    "eslint": "^9.39.3",
+    "eslint": "^9.39.4",
     "eslint-plugin-astro": "^1.6.0",
     "globals": "^16.5.0",
     "pagefind": "^1.4.0",
@@ -46,5 +46,10 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "volar-service-yaml": "0.0.70"
+    }
   }
 }
