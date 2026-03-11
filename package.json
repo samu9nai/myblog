@@ -13,11 +13,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.15",
-    "@astrojs/sitemap": "^3.7.0",
+    "@astrojs/rss": "^4.0.17",
+    "@astrojs/sitemap": "^3.7.1",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.2.1",
-    "astro": "^5.18.0",
+    "astro": "^5.18.1",
     "dayjs": "^1.11.19",
     "katex": "^0.16.38",
     "lodash.kebabcase": "^4.1.1",
@@ -31,7 +31,7 @@
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.6",
+    "@astrojs/check": "^0.9.7",
     "@pagefind/default-ui": "^1.4.0",
     "@shikijs/transformers": "^3.23.0",
     "@tailwindcss/typography": "^0.5.19",
