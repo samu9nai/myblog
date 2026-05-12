@@ -16,7 +16,7 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@resvg/resvg-js": "^2.6.2",
-    "@tailwindcss/vite": "^4.2.4",
+    "@tailwindcss/vite": "^4.3.0",
     "astro": "^5.18.1",
     "dayjs": "^1.11.20",
     "katex": "^0.16.45",
