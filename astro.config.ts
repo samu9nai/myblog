@@ -52,13 +52,56 @@ export default defineConfig({
   },
   fonts: [
     {
+      name: "Pretendard",
+      cssVariable: "--font-pretendard",
+      provider: fontProviders.local(),
+      weights: [300, 400, 500, 600, 700],
+      styles: ["normal"],
+      fallbacks: [
+        "Apple SD Gothic Neo",
+        "Noto Sans KR",
+        "Malgun Gothic",
+        "system-ui",
+        "sans-serif",
+      ],
+      options: {
+        variants: [
+          {
+            src: ["pretendard/dist/web/static/woff2/Pretendard-Light.woff2"],
+            weight: 300,
+            style: "normal",
+          },
+          {
+            src: ["pretendard/dist/web/static/woff2/Pretendard-Regular.woff2"],
+            weight: 400,
+            style: "normal",
+          },
+          {
+            src: ["pretendard/dist/web/static/woff2/Pretendard-Medium.woff2"],
+            weight: 500,
+            style: "normal",
+          },
+          {
+            src: ["pretendard/dist/web/static/woff2/Pretendard-SemiBold.woff2"],
+            weight: 600,
+            style: "normal",
+          },
+          {
+            src: ["pretendard/dist/web/static/woff2/Pretendard-Bold.woff2"],
+            weight: 700,
+            style: "normal",
+          },
+        ],
+      },
+    },
+    {
       name: "Google Sans Code",
       cssVariable: "--font-google-sans-code",
       provider: fontProviders.google(),
       fallbacks: ["monospace"],
-      weights: [300, 400, 500, 600, 700],
-      styles: ["normal", "italic"],
-      formats: ["woff", "ttf"],
+      weights: [400, 700],
+      styles: ["normal"],
+      formats: ["woff"],
     },
   ],
   env: {
