@@ -6,6 +6,7 @@ dist/
 
 # dependencies
 node_modules/
+.pnpm-store/
 
 # logs
 npm-debug.log*
@@ -17,20 +18,18 @@ pnpm-debug.log*
 .env
 .env.production
 
-# macOS-specific files
-.DS_Store
-
-.vercel
+.vercel/
 
 package-lock.json
 bun.lockb
 yarn.lock
 
+# macOS-specific files
+.DS_Store
+
 # jetbrains setting folder
 .idea/
-
 *.iml
 
 # pagefind
-
 public/pagefind
