@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@noonnu/gyeonggi-title-m";
 @import "./theme.css";
 @import "./typography.css";
 
@@ -17,6 +18,11 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
   }
 }
 
