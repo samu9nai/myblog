@@ -33,3 +33,6 @@ yarn.lock
 
 # pagefind
 public/pagefind
+
+# docker compose
+compose.override.yaml
