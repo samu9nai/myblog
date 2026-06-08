@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v6.1.0 (2026-06-06)
+
+### Feat
+
+- add callout support (#655)
+- add accessible image lightbox for post images (#654)
+
+### Fix
+
+- sanitize post title for valid CSS view-transition-name (#650)
+- iterate all weight matches in getFontPathByWeight (#645)
+- update incorrect RSS link (#649)
+
 ## v6.0.0 (2026-05-17)
 
 > ⚠ **BREAKING CHANGES**
@@ -15,8 +28,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 - **config**: rework into typed user-facing `astro-paper.config.ts` with internal resolved defaults layer (#631)
 - **i18n**: add lightweight i18n layer with English string keys and `useTranslations` helper (#631)
-- **mdx**: add MDX support via @astrojs/mdx (#631, closes #131)
-- **base-path**: add base path support across routing and asset helpers (#631, closes #493)
+- **mdx**: add MDX support via @astrojs/mdx (#631)
+- **base-path**: add base path support across routing and asset helpers (#631)
 - **archives**: add archives page (#631)
 - **search**: integrate Pagefind for static full-text search (#631)
 - **toc**: add table of contents for markdown posts (#631)
@@ -26,13 +39,10 @@ All notable changes to this project will be documented in this file. See [standa
 - **edit-post**: add configurable edit post link in post detail (#631)
 - **back-button**: add back button in post detail (#631)
 - **shiki**: add Shiki transformers for enhanced code block syntax highlighting (#631)
-- improve og image generation with Astro's getFontFileURL API (#632)
-- add ResponsiveTable component for use in MDX posts (#634)
 - integrate Astro fonts API with Google Sans Code font (#602)
 
 ### Fix
 
-- update back-to-top button DOM placement (#641)
 - **og**: avoid double slashes when appending index.png (#631)
 - **header**: adjust icon button and alignment in mobile (#631)
 - **a11y**: improve muted-foreground color contrast (#631)
