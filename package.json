@@ -21,7 +21,7 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
     "@noonnu/gyeonggi-title-m": "^0.1.0",
-    "@tailwindcss/vite": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.1",
     "astro": "^6.4.6",
     "dayjs": "^1.11.21",
     "lodash.kebabcase": "^4.1.1",
@@ -32,7 +32,7 @@
     "satori": "^0.26.0",
     "sharp": "^0.35.1",
     "slugify": "^1.6.9",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
