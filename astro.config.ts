@@ -1,36 +1,63 @@
-import {
-  defineConfig,
-  envField,
-  fontProviders,
-  svgoOptimizer,
-} from "astro/config";
+import { defineConfig, envField, svgoOptimizer } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import astroExpressiveCode from "astro-expressive-code";
 import { unified } from "@astrojs/markdown-remark";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import rehypeCallouts from "rehype-callouts";
-import {
-  transformerNotationDiff,
-  transformerNotationHighlight,
-  transformerNotationWordHighlight,
-} from "@shikijs/transformers";
-import { transformerFileName } from "./src/utils/transformers/fileName";
 import config from "./astro-paper.config";
 
 export default defineConfig({
   site: config.site.url,
   integrations: [
+    astroExpressiveCode({
+      themes: ["catppuccin-mocha"],
+      emitExternalStylesheet: false,
+      useDarkModeMediaQuery: false,
+      themeCssSelector: false,
+      defaultProps: {
+        wrap: false,
+      },
+      frames: {
+        extractFileNameFromCode: true,
+        showCopyToClipboardButton: true,
+      },
+      styleOverrides: {
+        borderColor: "var(--border)",
+        borderRadius: "0.75rem",
+        borderWidth: "1px",
+        codeFontFamily:
+          '"Maple Mono", "D2Coding", "Sarasa Mono K", "Sarasa Mono J", "Sarasa Mono HC", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+        codeFontSize: "0.875rem",
+        codeLineHeight: "1.65",
+        focusBorder: "var(--accent)",
+        uiFontFamily:
+          '"Spoqa Han Sans Neo", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif',
+        uiFontSize: "0.75rem",
+        frames: {
+          editorActiveTabIndicatorTopColor: "var(--accent)",
+          frameBoxShadowCssValue: "none",
+          shadowColor: "transparent",
+        },
+      },
+    }),
     mdx(),
     sitemap({
-      filter: page =>
-        config.features?.showArchives !== false || !page.endsWith("/archives/"),
+      filter: page => {
+        if (page.endsWith("/font-preview/")) return false;
+
+        return (
+          config.features?.showArchives !== false ||
+          !page.endsWith("/archives/")
+        );
+      },
     }),
   ],
   i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
+    locales: ["ko"],
+    defaultLocale: "ko",
     routing: {
       prefixDefaultLocale: false,
     },
@@ -43,75 +70,10 @@ export default defineConfig({
       ],
       rehypePlugins: [rehypeCallouts],
     }),
-    shikiConfig: {
-      themes: { light: "min-light", dark: "night-owl" },
-      defaultColor: false,
-      wrap: false,
-      transformers: [
-        transformerFileName({ style: "v2", hideDot: false }),
-        transformerNotationHighlight(),
-        transformerNotationWordHighlight(),
-        transformerNotationDiff({ matchAlgorithm: "v3" }),
-      ],
-    },
   },
   vite: {
     plugins: [tailwindcss()],
   },
-  fonts: [
-    {
-      name: "Pretendard",
-      cssVariable: "--font-pretendard",
-      provider: fontProviders.local(),
-      weights: [300, 400, 500, 600, 700],
-      styles: ["normal"],
-      fallbacks: [
-        "Apple SD Gothic Neo",
-        "Noto Sans KR",
-        "Malgun Gothic",
-        "system-ui",
-        "sans-serif",
-      ],
-      options: {
-        variants: [
-          {
-            src: ["pretendard/dist/web/static/woff2/Pretendard-Light.woff2"],
-            weight: 300,
-            style: "normal",
-          },
-          {
-            src: ["pretendard/dist/web/static/woff2/Pretendard-Regular.woff2"],
-            weight: 400,
-            style: "normal",
-          },
-          {
-            src: ["pretendard/dist/web/static/woff2/Pretendard-Medium.woff2"],
-            weight: 500,
-            style: "normal",
-          },
-          {
-            src: ["pretendard/dist/web/static/woff2/Pretendard-SemiBold.woff2"],
-            weight: 600,
-            style: "normal",
-          },
-          {
-            src: ["pretendard/dist/web/static/woff2/Pretendard-Bold.woff2"],
-            weight: 700,
-            style: "normal",
-          },
-        ],
-      },
-    },
-    {
-      name: "Google Sans Code",
-      cssVariable: "--font-google-sans-code",
-      provider: fontProviders.google(),
-      fallbacks: ["monospace"],
-      weights: [400, 700],
-      styles: ["normal"],
-      formats: ["woff"],
-    },
-  ],
   env: {
     schema: {
       PUBLIC_GOOGLE_SITE_VERIFICATION: envField.string({

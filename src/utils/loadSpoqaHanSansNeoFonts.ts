@@ -3,10 +3,10 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 
-const pretendardRegularPath =
-  require.resolve("pretendard/dist/public/static/alternative/Pretendard-Regular.ttf");
-const pretendardBoldPath =
-  require.resolve("pretendard/dist/public/static/alternative/Pretendard-Bold.ttf");
+const spoqaRegularPath =
+  require.resolve("spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.ttf");
+const spoqaBoldPath =
+  require.resolve("spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.ttf");
 
 function toArrayBuffer(buffer: Buffer): ArrayBuffer {
   return buffer.buffer.slice(
@@ -15,10 +15,10 @@ function toArrayBuffer(buffer: Buffer): ArrayBuffer {
   ) as ArrayBuffer;
 }
 
-export async function loadPretendardFonts() {
+export async function loadSpoqaHanSansNeoFonts() {
   const [regular, bold] = await Promise.all([
-    readFile(pretendardRegularPath),
-    readFile(pretendardBoldPath),
+    readFile(spoqaRegularPath),
+    readFile(spoqaBoldPath),
   ]);
 
   return {

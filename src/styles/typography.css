@@ -22,8 +22,7 @@
     ol,
     ul,
     figcaption,
-    table,
-    code {
+    table {
       @apply text-foreground;
     }
 
@@ -70,12 +69,8 @@
       }
     }
 
-    code {
+    :not(pre) > code {
       @apply bg-muted/75 text-foreground rounded p-1 font-mono wrap-break-word before:content-none after:content-none;
-    }
-
-    .astro-code code {
-      @apply flex-[1_0_100%] bg-inherit p-0;
     }
 
     blockquote {
@@ -94,30 +89,23 @@
       @apply focus-visible:outline-accent focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-dashed;
     }
   }
+}
 
-  /* ===== Code Blocks & Syntax Highlighting ===== */
-  .astro-code {
-    @apply outline-border flex border bg-(--shiki-light-bg) font-mono text-(--shiki-light) [&_span]:text-(--shiki-light);
-  }
-
-  html[data-theme="dark"] .astro-code {
-    @apply bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
-  }
-
-  /* Styles for Shiki transformers */
-  /* https://shiki.style/packages/transformers */
-  .astro-code {
-    .line.diff.add {
-      @apply relative inline-block w-full bg-green-400/20 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
-    }
-    .line.diff.remove {
-      @apply relative inline-block w-full bg-red-500/20 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
-    }
-    .line.highlighted {
-      @apply inline-block w-full bg-slate-400/20;
-    }
-    .highlighted-word {
-      @apply border-border rounded-sm border px-0.5 py-px;
-    }
-  }
+.app-prose .expressive-code pre > code {
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings:
+    "calt" 1,
+    "liga" 1,
+    "cv01" 1,
+    "cv02" 1,
+    "cv33" 1,
+    "cv34" 1,
+    "cv35" 1,
+    "cv36" 1,
+    "cv61" 1,
+    "cv62" 1,
+    "ss05" 1,
+    "ss06" 1,
+    "ss07" 1,
+    "ss08" 1;
 }

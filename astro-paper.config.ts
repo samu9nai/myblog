@@ -3,13 +3,13 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://samu9nai.vercel.app",
-    title: "AstroPaper",
-    description: "A minimal, responsive and SEO-friendly Astro blog theme.",
+    title: "samu9nai.log",
+    description: "개발 과정에서 마주친 설계 문제와 선택을 기록합니다.",
     author: "samu9nai",
     profile: "https://github.com/samu9nai",
-    ogImage: "default-og.jpg",
-    lang: "en",
-    timezone: "Asia/Bangkok",
+    ogImage: "og.png",
+    lang: "ko",
+    timezone: "Asia/Seoul",
     dir: "ltr",
   },
   posts: {
@@ -29,14 +29,17 @@ export default defineAstroPaperConfig({
     search: "pagefind",
   },
   socials: [
-    { name: "github",   url: "https://github.com/samu9nai/myblog" },
+    {
+      name: "github",
+      url: "https://github.com/samu9nai",
+      linkTitle: "GitHub에서 samu9nai 보기",
+    },
   ],
   shareLinks: [
-    { name: "whatsapp", url: "https://wa.me/?text=" },
-    { name: "facebook", url: "https://www.facebook.com/sharer.php?u=" },
-    { name: "x",        url: "https://x.com/intent/post?url=" },
-    { name: "telegram", url: "https://t.me/share/url?url=" },
-    { name: "pinterest", url: "https://pinterest.com/pin/create/button/?url=" },
-    { name: "mail",     url: "mailto:?subject=See%20this%20post&body=" },
+    { name: "x", url: "https://x.com/intent/post?url=" },
+    {
+      name: "mail",
+      url: "mailto:?subject=%EA%B3%B5%EC%9C%A0%ED%95%98%EA%B3%A0%20%EC%8B%B6%EC%9D%80%20%EA%B8%80&body=",
+    },
   ],
 });

@@ -3,16 +3,14 @@ import { getCollection } from "astro:content";
 import satori from "satori";
 import sharp from "sharp";
 import { getPostSlug } from "@/utils/getPostPaths";
-import { loadPretendardFonts } from "@/utils/loadPretendardFonts";
+import { loadSpoqaHanSansNeoFonts } from "@/utils/loadSpoqaHanSansNeoFonts";
 import config from "@/config";
 
 export async function getStaticPaths() {
-  if (!config.features.dynamicOgImage) {
-    return [];
-  }
+  if (!config.features.dynamicOgImage) return [];
 
-  const posts = await getCollection("posts").then(p =>
-    p.filter(({ data }) => !data.draft && !data.ogImage)
+  const posts = await getCollection("posts").then(posts =>
+    posts.filter(({ data }) => !data.draft && !data.ogImage)
   );
 
   return posts.map(post => ({
@@ -26,20 +24,30 @@ export const GET: APIRoute = async ({ props }) => {
     return new Response(null, { status: 404, statusText: "Not found" });
   }
 
-  const { regular, bold } = await loadPretendardFonts();
+  const { regular, bold } = await loadSpoqaHanSansNeoFonts();
+  const title = props.data.title as string;
+  const tags = (props.data.tags as string[]).slice(0, 3).join(" · ");
+  const date = new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: props.data.timezone ?? config.site.timezone,
+  }).format(new Date(props.data.pubDatetime));
 
   const svg = await satori(
     {
       type: "div",
       props: {
         style: {
-          background: "#fefbfb",
+          position: "relative",
           width: "100%",
           height: "100%",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "Pretendard",
+          padding: "56px",
+          overflow: "hidden",
+          color: "#223149",
+          background: "#eaf8ff",
+          fontFamily: "Spoqa Han Sans Neo",
         },
         children: [
           {
@@ -47,17 +55,12 @@ export const GET: APIRoute = async ({ props }) => {
             props: {
               style: {
                 position: "absolute",
-                top: "-1px",
-                right: "-1px",
-                border: "4px solid #000",
-                background: "#ecebeb",
-                opacity: "0.9",
-                borderRadius: "4px",
-                display: "flex",
-                justifyContent: "center",
-                margin: "2.5rem",
-                width: "88%",
-                height: "80%",
+                top: "-110px",
+                right: "-50px",
+                width: "330px",
+                height: "330px",
+                borderRadius: "999px",
+                background: "#d2f0ff",
               },
             },
           },
@@ -65,88 +68,125 @@ export const GET: APIRoute = async ({ props }) => {
             type: "div",
             props: {
               style: {
-                border: "4px solid #000",
-                background: "#fefbfb",
-                borderRadius: "4px",
-                display: "flex",
-                justifyContent: "center",
-                margin: "2rem",
-                width: "88%",
-                height: "80%",
+                position: "absolute",
+                bottom: "-100px",
+                left: "-70px",
+                width: "270px",
+                height: "270px",
+                borderRadius: "999px",
+                background: "#f3c4db",
               },
-              children: {
-                type: "div",
-                props: {
-                  style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    margin: "20px",
-                    width: "90%",
-                    height: "90%",
+            },
+          },
+          {
+            type: "div",
+            props: {
+              style: {
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                padding: "52px",
+                border: "4px solid #83d6f7",
+                borderRadius: "32px",
+                background: "#f8fcff",
+              },
+              children: [
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      fontSize: 26,
+                    },
+                    children: [
+                      {
+                        type: "div",
+                        props: {
+                          style: { display: "flex", alignItems: "center" },
+                          children: [
+                            {
+                              type: "span",
+                              props: {
+                                style: {
+                                  width: "16px",
+                                  height: "16px",
+                                  marginRight: "14px",
+                                  borderRadius: "999px",
+                                  background: "#b84278",
+                                },
+                              },
+                            },
+                            {
+                              type: "span",
+                              props: {
+                                style: { fontWeight: 700 },
+                                children: config.site.title,
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        type: "span",
+                        props: {
+                          style: { color: "#4f708d", fontSize: 22 },
+                          children: tags,
+                        },
+                      },
+                    ],
                   },
-                  children: [
-                    {
+                },
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      display: "flex",
+                      alignItems: "center",
+                      minHeight: "300px",
+                      overflow: "hidden",
+                    },
+                    children: {
                       type: "p",
                       props: {
                         style: {
-                          fontSize: 72,
-                          fontWeight: "bold",
-                          maxHeight: "84%",
-                          overflow: "hidden",
+                          margin: 0,
+                          maxWidth: "1000px",
+                          fontSize: title.length > 38 ? 54 : 64,
+                          fontWeight: 700,
+                          lineHeight: 1.3,
+                          letterSpacing: "-0.035em",
                         },
-                        children: props.data.title,
+                        children: title,
                       },
                     },
-                    {
-                      type: "div",
-                      props: {
-                        style: {
-                          display: "flex",
-                          justifyContent: "space-between",
-                          width: "100%",
-                          marginBottom: "8px",
-                          fontSize: 28,
-                        },
-                        children: [
-                          {
-                            type: "span",
-                            props: {
-                              children: [
-                                "by ",
-                                {
-                                  type: "span",
-                                  props: {
-                                    style: { color: "transparent" },
-                                    children: '"',
-                                  },
-                                },
-                                {
-                                  type: "span",
-                                  props: {
-                                    style: {
-                                      overflow: "hidden",
-                                      fontWeight: "bold",
-                                    },
-                                    children: props.data.author,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            type: "span",
-                            props: {
-                              style: { overflow: "hidden", fontWeight: "bold" },
-                              children: config.site.title,
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
+                  },
                 },
-              },
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      display: "flex",
+                      justifyContent: "space-between",
+                      color: "#4f708d",
+                      fontSize: 24,
+                    },
+                    children: [
+                      {
+                        type: "span",
+                        props: {
+                          style: { fontWeight: 700, color: "#223149" },
+                          children: `by ${props.data.author}`,
+                        },
+                      },
+                      { type: "span", props: { children: date } },
+                    ],
+                  },
+                },
+              ],
             },
           },
         ],
@@ -158,13 +198,13 @@ export const GET: APIRoute = async ({ props }) => {
       embedFont: true,
       fonts: [
         {
-          name: "Pretendard",
+          name: "Spoqa Han Sans Neo",
           data: regular,
           weight: 400,
           style: "normal",
         },
         {
-          name: "Pretendard",
+          name: "Spoqa Han Sans Neo",
           data: bold,
           weight: 700,
           style: "normal",

@@ -1,0 +1,41 @@
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  src:
+    local("Spoqa Han Sans Neo Regular"),
+    url("../../node_modules/spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff2")
+      format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  src:
+    local("Spoqa Han Sans Neo Medium"),
+    url("../../node_modules/spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Medium.woff2")
+      format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  src:
+    local("Spoqa Han Sans Neo Bold"),
+    url("../../node_modules/spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.woff2")
+      format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MapoFlowerIsland";
+  src: url("../../node_modules/@noonnu/mapo-flower-island/fonts/mapoflowerisland-normal.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

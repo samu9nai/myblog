@@ -1,0 +1,188 @@
+---
+import "@fontsource/maple-mono/400.css";
+import "@fontsource/maple-mono/600.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/600.css";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+const candidates = [
+  {
+    name: "Maple Mono Normal NL",
+    className: "font-maple",
+    summary:
+      "둥근 모서리와 부드러운 인상. 문자 변형은 Normal 프리셋, ligature는 비활성화.",
+  },
+  {
+    name: "JetBrains Mono",
+    className: "font-jetbrains",
+    summary:
+      "높은 x-height와 명확한 기호 구분. 가장 익숙하고 안정적인 개발 도구의 인상.",
+  },
+  {
+    name: "IBM Plex Mono",
+    className: "font-ibm",
+    summary: "차분한 리듬과 편집 디자인에 가까운 인상. 기술 문서처럼 단정함.",
+  },
+];
+
+const samples = [
+  {
+    title: "Glyphs",
+    code: "Il1 | O0o | {}[]() | -> => != === <= >= | 1_000_000",
+  },
+  {
+    title: "Java",
+    code: `@Transactional
+public Trade buy(BuyRequest request, String idempotencyKey) {
+  // 같은 요청은 한 번만 처리한다.
+  if (tradeRepository.existsByKey(idempotencyKey)) {
+    throw new DuplicateOrderException(idempotencyKey);
+  }
+
+  long totalAmount = Math.multiplyExact(
+    request.price(),
+    request.quantity()
+  );
+  return Trade.completed("FANS", totalAmount);
+}`,
+  },
+  {
+    title: "SQL",
+    code: `-- 정산 완료 시점의 랭킹 스냅샷
+SELECT u.nickname,
+       SUM(h.quantity * s.current_price) AS total_asset
+FROM holdings h
+JOIN users u ON u.id = h.user_id
+JOIN stocks s ON s.id = h.stock_id
+WHERE s.status = 'TRADABLE'
+GROUP BY u.id, u.nickname
+ORDER BY total_asset DESC;`,
+  },
+  {
+    title: "JSON",
+    code: `{
+  "success": true,
+  "data": {
+    "symbol": "FANS",
+    "returnRate": 12.75,
+    "message": "정산이 완료되었습니다."
+  },
+  "message": null
+}`,
+  },
+];
+---
+
+<Layout
+  title={`코드 폰트 비교 | ${config.site.title}`}
+  description="Maple Mono, JetBrains Mono, IBM Plex Mono 비교"
+>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex,nofollow" />
+  </Fragment>
+
+  <Header />
+
+  <main id="main-content" class="mx-auto w-full max-w-[1500px] px-4 py-10">
+    <header class="mx-auto mb-10 max-w-3xl">
+      <p class="text-accent mb-2 text-sm font-semibold tracking-widest">
+        PRIVATE TYPE SPECIMEN
+      </p>
+      <h1 class="text-4xl font-bold sm:text-5xl">코드 폰트 비교</h1>
+      <p class="text-muted-foreground mt-4 leading-7">
+        같은 Java·SQL·JSON과 한글 주석을 동일한 크기와 행간으로 렌더링했습니다.
+        각 카드의 영문·숫자·기호 형태와 한글 fallback의 조화를 비교합니다.
+      </p>
+    </header>
+
+    <section class="grid gap-6 xl:grid-cols-3" aria-label="코드 폰트 후보">
+      {
+        candidates.map(candidate => (
+          <article
+            class:list={[
+              "border-border bg-background overflow-hidden rounded-2xl border",
+              candidate.className,
+            ]}
+          >
+            <header class="border-border bg-muted/60 border-b p-5">
+              <h2 class="text-foreground text-xl font-bold">
+                {candidate.name}
+              </h2>
+              <p class="text-muted-foreground mt-2 text-sm leading-6">
+                {candidate.summary}
+              </p>
+            </header>
+
+            <div class="space-y-5 p-4 sm:p-5">
+              {samples.map(sample => (
+                <section>
+                  <h3 class="text-muted-foreground mb-2 text-xs font-semibold tracking-widest uppercase">
+                    {sample.title}
+                  </h3>
+                  <pre class="preview-code" tabindex="0">
+                    <code>{sample.code}</code>
+                  </pre>
+                </section>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .preview-code {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: color-mix(in srgb, var(--muted) 60%, transparent);
+    padding: 1rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.65;
+    tab-size: 2;
+  }
+
+  .preview-code code {
+    font: inherit;
+    white-space: pre;
+  }
+
+  .font-maple .preview-code {
+    font-family: "Maple Mono", "D2Coding", ui-monospace, monospace;
+    font-variant-ligatures: common-ligatures contextual;
+    font-feature-settings:
+      "calt" 1,
+      "liga" 1,
+      "cv01" 1,
+      "cv02" 1,
+      "cv33" 1,
+      "cv34" 1,
+      "cv35" 1,
+      "cv36" 1,
+      "cv61" 1,
+      "cv62" 1,
+      "ss05" 1,
+      "ss06" 1,
+      "ss07" 1,
+      "ss08" 1;
+  }
+
+  .font-jetbrains .preview-code {
+    font-family: "JetBrains Mono Variable", "D2Coding", ui-monospace, monospace;
+    font-variant-ligatures: none;
+  }
+
+  .font-ibm .preview-code {
+    font-family: "IBM Plex Mono", "D2Coding", ui-monospace, monospace;
+    font-variant-ligatures: none;
+  }
+</style>

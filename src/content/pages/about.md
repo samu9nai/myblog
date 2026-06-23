@@ -1,37 +1,29 @@
 ---
-title: "About"
-description: "A bit about me and this blog."
+title: "소개"
+description: "samu9nai와 이 블로그에 관하여"
 ---
 
-AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
+안녕하세요, **samu9nai**입니다.
 
-![Astro Paper](@/assets/images/astropaper-og.jpg)
+직접 만들고 부딪치며 이해하는 것을 좋아합니다. 이 블로그에는 완성된 결과만 나열하기보다, 개발 과정에서 어떤 문제를 만났고 무엇을 근거로 선택했는지 기록합니다.
 
-AstroPaper provides a solid foundation for blogs, or even portfolios\_ with full markdown support, built-in dark mode, and a clean layout that works out-of-the-box.
+## 주로 기록하는 것
 
-The blog posts in this theme also serve as guides, docs or example articles\_ making AstroPaper a flexible starting point for your next content-driven site.
+- 백엔드와 데이터 모델링
+- 트랜잭션과 데이터 정합성
+- 제품을 만들며 내린 설계 결정
+- 사이드 프로젝트의 구현 과정과 회고
 
-## Features
+최근에는 Java와 Spring Boot를 중심으로 백엔드를 만들고, TypeScript와 Svelte로 사용자 화면을 연결하고 있습니다.
 
-AstroPaper comes with a set of useful features that make content publishing easy and effective:
+## 지금 만드는 것
 
-- SEO-friendly
-- Fast performance
-- Light & dark mode
-- Highly customizable
-- Organizable blog posts
-- Responsive & accessible
-- Static search with [PageFind](https://pagefind.app/)
-- Automatic social image generation
+[**Fansdaq**](https://github.com/samu9nai/fansdaq)은 경기 결과에 따라 기준가가 변하는 가상 종목을 사고팔고, 포트폴리오 수익률과 랭킹을 경쟁하는 모의투자 서비스입니다.
 
-and so much more.
+재미있는 팬 서비스의 형태 안에서 예수금과 보유 자산의 정합성, 중복 주문 방지, 정산 라운드, 가격과 랭킹 스냅샷 같은 거래 시스템의 문제를 공부하고 있습니다.
 
-## Show your support
+## 이 블로그의 원칙
 
-If you like [AstroPaper](https://github.com/satnaing/astro-paper), consider giving it a star ⭐️.
+글마다 하나의 문제에 집중합니다. 선택한 방법뿐 아니라 검토한 대안과 남은 한계도 함께 적으려고 합니다. 아직 구현하지 않은 내용은 설계 또는 계획으로 구분하고, 구현한 내용은 가능한 한 코드와 테스트를 근거로 남깁니다.
 
-Found a bug 🐛 or have an improvement ✨ in mind? Feel free to open an [issue](https://github.com/satnaing/astro-paper/issues), submit a [pull request](https://github.com/satnaing/astro-paper/pulls) or start a [discussion](https://github.com/satnaing/astro-paper/discussions).
-
-If you find this theme helpful, you can also [sponsor me on GitHub](https://github.com/sponsors/satnaing) or [buy me a coffee](https://buymeacoffee.com/satnaing) to show your support — every penny counts.
-
-Kyay zuu! 🙏🏼
+코드와 프로젝트는 [GitHub](https://github.com/samu9nai)에서 확인할 수 있습니다.

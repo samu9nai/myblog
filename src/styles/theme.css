@@ -7,33 +7,41 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
-  --font-app: var(--font-pretendard);
-  --font-display: "GyeonggiTitleM", var(--font-pretendard);
+  --font-app:
+    "Spoqa Han Sans Neo", "Apple SD Gothic Neo", "Noto Sans KR",
+    "Malgun Gothic", system-ui, sans-serif;
+  --font-display:
+    "Spoqa Han Sans Neo", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-accent:
+    "MapoFlowerIsland", "Spoqa Han Sans Neo", "Apple SD Gothic Neo", cursive;
   --font-mono:
-    "Sarasa Mono K", "Sarasa Mono J", "Sarasa Mono HC",
-    var(--font-google-sans-code), ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", "Courier New", monospace;
+    "Maple Mono", "D2Coding", "Sarasa Mono K", "Sarasa Mono J",
+    "Sarasa Mono HC", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --font-mono--font-feature-settings:
+    "calt" 1, "liga" 1, "cv01" 1, "cv02" 1, "cv33" 1, "cv34" 1, "cv35" 1,
+    "cv36" 1, "cv61" 1, "cv62" 1, "ss05" 1, "ss06" 1, "ss07" 1, "ss08" 1;
 }
 
 /* Light theme values */
 :root,
 [data-theme="light"] {
-  --background: #eaf8ff;
-  --foreground: #223149;
-  --accent: #df6aa3;
-  --accent-foreground: #121a2b;
-  --muted: #d2f0ff;
-  --muted-foreground: #4f708d;
-  --border: #83d6f7;
+  --background: #ffffff;
+  --foreground: #1f2937;
+  --accent: #2563eb;
+  --accent-foreground: #111827;
+  --muted: #fff3f7;
+  --muted-foreground: #64748b;
+  --border: #ee79a3;
 }
 
 /* Dark theme values */
 [data-theme="dark"] {
-  --background: #18263d;
-  --foreground: #eef8ff;
-  --accent: #ffa3cf;
-  --accent-foreground: #18263d;
-  --muted: #243a58;
-  --muted-foreground: #c8daf0;
-  --border: #5fc4f1;
+  --background: #111827;
+  --foreground: #f8fafc;
+  --accent: #7dd3fc;
+  --accent-foreground: #111827;
+  --muted: #2b2028;
+  --muted-foreground: #cbd5e1;
+  --border: #f59ab9;
 }

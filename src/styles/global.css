@@ -1,5 +1,8 @@
 @import "tailwindcss";
-@import "@noonnu/gyeonggi-title-m";
+@import "@fontsource/maple-mono/400.css";
+@import "@fontsource/maple-mono/400-italic.css";
+@import "@fontsource/maple-mono/600.css";
+@import "./fonts.css";
 @import "./theme.css";
 @import "./typography.css";
 @import "rehype-callouts/theme/obsidian";
@@ -7,6 +10,17 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @layer base {
+  html {
+    font-family: var(--font-app);
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
   * {
     @apply border-border outline-accent/75;
     scrollbar-width: auto;
@@ -22,8 +36,10 @@
   }
   h1,
   h2,
-  h3 {
-    @apply font-display;
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
   }
 }
 

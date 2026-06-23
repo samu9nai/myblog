@@ -34,8 +34,10 @@ const homePath = getRelativeLocaleUrl(locale, "");
     class="app-layout"
   >
     <section id="hero" class="border-border border-b pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Mingalaba
+      <h1
+        class="font-accent my-4 inline-block text-4xl font-normal sm:my-8 sm:text-5xl"
+      >
+        안녕하세요.
       </h1>
       <a
         target="_blank"
@@ -53,19 +55,16 @@ const homePath = getRelativeLocaleUrl(locale, "");
       </a>
 
       <p>
-        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
-        blog theme. This theme follows best practices and provides accessibility
-        out of the box. This build uses a bright sky-blue palette with soft pink
-        accents, while additional color schemes can also be configured.
+        개발 과정에서 마주친 설계 문제와 선택의 이유, 시행착오를 기록합니다.
       </p>
       <p class="mt-2">
-        Read the blog posts or check
+        현재는 경기 결과 기반 모의투자 서비스
         <LinkButton
           class="hover:text-accent underline decoration-dashed underline-offset-4"
-          href="https://github.com/satnaing/astro-paper#readme"
+          href="https://github.com/samu9nai/fansdaq"
         >
-          README
-        </LinkButton> for more info.
+          Fansdaq
+        </LinkButton>을 만들고 있습니다.
       </p>
       {
         socials.length > 0 && (
@@ -88,9 +87,7 @@ const homePath = getRelativeLocaleUrl(locale, "");
             { "border-border border-b": recentPosts.length > 0 },
           ]}
         >
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.featured}
-          </h2>
+          <h2 class="text-2xl font-bold tracking-wide">{t.home.featured}</h2>
           <ul>
             {featuredPosts.map(data => (
               <Card variant="h3" {...data} />
@@ -103,9 +100,7 @@ const homePath = getRelativeLocaleUrl(locale, "");
     {
       recentPosts.length > 0 && (
         <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.recentPosts}
-          </h2>
+          <h2 class="text-2xl font-bold tracking-wide">{t.home.recentPosts}</h2>
           <ul>
             {recentPosts.slice(0, postsConfig.perIndex).map(data => (
               <Card variant="h3" {...data} />
