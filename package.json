@@ -24,7 +24,7 @@
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/maple-mono": "^5.2.6",
     "@noonnu/mapo-flower-island": "^0.1.0",
-    "@tailwindcss/vite": "^4.3.1",
+    "@tailwindcss/vite": "^4.3.2",
     "astro": "^6.4.8",
     "astro-expressive-code": "^0.43.1",
     "dayjs": "^1.11.21",
@@ -36,7 +36,7 @@
     "sharp": "^0.35.2",
     "slugify": "^1.6.9",
     "spoqa-han-sans": "^3.3.0",
-    "tailwindcss": "^4.3.1"
+    "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
