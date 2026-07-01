@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",
-    "@astrojs/rss": "^4.0.18",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource/ibm-plex-mono": "^5.2.7",
@@ -33,7 +33,7 @@
     "remark-collapse": "^0.1.2",
     "remark-toc": "^9.0.0",
     "satori": "^0.26.0",
-    "sharp": "^0.35.2",
+    "sharp": "^0.35.3",
     "slugify": "^1.6.9",
     "spoqa-han-sans": "^3.3.0",
     "tailwindcss": "^4.3.2"
@@ -48,7 +48,7 @@
     "eslint": "^10.6.0",
     "eslint-plugin-astro": "^1.7.0",
     "pagefind": "^1.5.2",
-    "prettier": "3.9.3",
+    "prettier": "3.9.4",
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^6.0.3"
