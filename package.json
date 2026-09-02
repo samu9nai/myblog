@@ -33,7 +33,7 @@
     "remark-collapse": "^0.1.2",
     "remark-toc": "^9.0.0",
     "satori": "^0.28.1",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.4",
     "slugify": "^1.6.9",
     "spoqa-han-sans": "^3.3.0",
     "tailwindcss": "^4.3.3"
