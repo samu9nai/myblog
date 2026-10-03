@@ -15,7 +15,9 @@ const { Content } = await render(post)
 
 <Layout
   title={title}
-  description={description}>
+  description={description}
+  ogImage={`/og/${post.id}.png`}
+  ogType="article">
   <article>
     <header class="border-border border-b pb-6">
       <h1 class="text-2xl font-bold">{title}</h1>
