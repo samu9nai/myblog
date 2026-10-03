@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "samu9nai",
+  "name": "blog",
   // workerd 1.20261001이 지원하는 가장 최근 날짜다.
   "compatibility_date": "2026-10-01",
   // 서버 코드 없이 Astro 정적 빌드 결과만 배포한다.

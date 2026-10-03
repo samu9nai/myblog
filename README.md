@@ -45,14 +45,14 @@ pnpm exec wrangler deploy --dry-run
 
 ## 배포
 
-Cloudflare 대시보드의 Workers Builds가 GitHub 저장소 `samu9nai/myblog`에 연결되어 push마다 빌드합니다. 설정값은 Workers Builds 기본값을 씁니다.
+사이트 주소는 <https://blog.samu9nai.workers.dev>입니다. Cloudflare 대시보드의 Workers Builds가 GitHub 저장소 `samu9nai/myblog`에 연결되어 push마다 빌드합니다. 설정값은 Workers Builds 기본값을 씁니다.
 
 | 항목                        | 값                                                         |
 | --------------------------- | ---------------------------------------------------------- |
 | 빌드 명령                   | `pnpm run build`                                           |
 | 배포 명령 (프로덕션 브랜치) | `npx wrangler deploy`                                      |
 | 배포 명령 (그 밖의 브랜치)  | `npx wrangler preview` (브랜치별 미리보기 주소를 만듭니다) |
-| Worker 이름                 | `samu9nai` (`wrangler.jsonc`의 `name`과 같아야 합니다)     |
+| Worker 이름                 | `blog` (`wrangler.jsonc`의 `name`과 같아야 합니다)         |
 
 `wrangler.jsonc`는 `dist`를 정적 자산으로 올리고, 없는 경로에는 `404.html`을 돌려줍니다.
 
