@@ -1,0 +1,25 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PostList from '@/components/PostList.astro'
+import { getPosts } from '@/utils/posts'
+
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  const tags = new Set(posts.flatMap(post => post.data.tags))
+  return [...tags].map(tag => ({
+    params: { tag },
+    props: { posts: posts.filter(post => post.data.tags.includes(tag)) }
+  }))
+}
+
+const { tag } = Astro.params
+const { posts } = Astro.props
+---
+
+<Layout
+  title={`#${tag}`}
+  description={`${tag} 태그가 붙은 글`}>
+  <h1 class="font-mono text-2xl font-bold">#{tag}</h1>
+  <p class="text-muted mt-3">글 {posts.length}개</p>
+  <PostList posts={posts} />
+</Layout>

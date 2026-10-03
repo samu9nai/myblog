@@ -9,7 +9,7 @@ const posts = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    // 태그는 /tags/<tag> 주소가 되므로 소문자 kebab만 받는다.
+    // 태그는 /posts/tags/<tag> 주소가 되므로 소문자 kebab만 받는다.
     tags: z
       .array(
         z

@@ -35,7 +35,13 @@ const { Content } = await render(post)
           aria-label="태그"
           class="text-muted mt-2 flex flex-wrap gap-x-3 font-mono text-sm">
           {tags.map(tag => (
-            <li>#{tag}</li>
+            <li>
+              <a
+                href={`/posts/tags/${tag}`}
+                class="hover:text-accent transition-colors">
+                #{tag}
+              </a>
+            </li>
           ))}
         </ul>
       )}
