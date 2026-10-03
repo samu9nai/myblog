@@ -28,6 +28,7 @@ draft: true
 ## 코드 블록
 
 ```java
+// OrderService.java
 @Transactional
 public Order buy(String idempotencyKey, BuyCommand command) {
     return orderRepository.findByIdempotencyKey(idempotencyKey)

@@ -84,7 +84,7 @@
   }
 }
 
-/* 글 본문(Markdown) 스타일. 코드 블록 테마는 따로 정한다. */
+/* 글 본문(Markdown) 스타일. 코드 블록은 Expressive Code가 그린다. */
 @layer components {
   .prose {
     @apply leading-relaxed;
@@ -126,10 +126,6 @@
       @apply bg-surface rounded px-1.5 py-0.5 font-mono text-[0.9em];
     }
 
-    & pre {
-      @apply overflow-x-auto rounded-md p-4 font-mono text-sm leading-normal;
-    }
-
     & table {
       @apply block w-full overflow-x-auto text-sm;
     }
@@ -147,4 +143,24 @@
       @apply border-border my-10;
     }
   }
+}
+
+/* 예전 블로그에서 옮긴 Maple Mono 리거처와 글자 변형 설정이다. */
+.prose .expressive-code pre > code {
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings:
+    'calt' 1,
+    'liga' 1,
+    'cv01' 1,
+    'cv02' 1,
+    'cv33' 1,
+    'cv34' 1,
+    'cv35' 1,
+    'cv36' 1,
+    'cv61' 1,
+    'cv62' 1,
+    'ss05' 1,
+    'ss06' 1,
+    'ss07' 1,
+    'ss08' 1;
 }
