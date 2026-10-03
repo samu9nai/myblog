@@ -1,9 +1,10 @@
 ---
+import Search from '@/components/Search.astro'
 import ThemeToggle from '@/components/ThemeToggle.astro'
 import { nav, site } from '@/site'
 
 const path = Astro.url.pathname
-const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
+const isCurrent = (href: string) => path.startsWith(href)
 ---
 
 <header class="border-border flex items-center justify-between border-b py-5">
@@ -23,6 +24,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
         {item.label}
       </a>
     ))}
+    <Search />
     <ThemeToggle />
   </nav>
 </header>

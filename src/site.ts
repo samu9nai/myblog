@@ -6,7 +6,7 @@ export const site = {
 }
 
 export const nav = [
-  { href: '/projects', label: '프로젝트' },
-  { href: '/posts', label: '글' },
-  { href: '/resume', label: '이력서' }
+  { href: '/projects/', label: '프로젝트' },
+  { href: '/posts/', label: '글' },
+  { href: '/resume/', label: '이력서' }
 ]

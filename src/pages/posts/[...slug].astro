@@ -1,0 +1,55 @@
+---
+import { render } from 'astro:content'
+import Layout from '@/layouts/Layout.astro'
+import { formatDate, getPosts } from '@/utils/posts'
+
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }))
+}
+
+const { post } = Astro.props
+const { title, description, pubDate, updatedDate, tags } = post.data
+const { Content } = await render(post)
+---
+
+<Layout
+  title={title}
+  description={description}
+  ogImage={`/og/${post.id}.png`}
+  ogType="article">
+  <article>
+    <header class="border-border border-b pb-6">
+      <h1 class="text-2xl font-bold">{title}</h1>
+      <p class="text-muted mt-3 font-mono text-sm">
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        {updatedDate && (
+          <>
+            {' · 수정 '}
+            <time datetime={updatedDate.toISOString()}>
+              {formatDate(updatedDate)}
+            </time>
+          </>
+        )}
+      </p>
+      {tags.length > 0 && (
+        <ul
+          aria-label="태그"
+          class="text-muted mt-2 flex flex-wrap gap-x-3 font-mono text-sm">
+          {tags.map(tag => (
+            <li>
+              <a
+                href={`/posts/tags/${tag}/`}
+                class="hover:text-accent transition-colors">
+                #{tag}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </header>
+    <div class="prose mt-8">
+      <Content />
+    </div>
+  </article>
+</Layout>
