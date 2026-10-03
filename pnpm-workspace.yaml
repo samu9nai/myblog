@@ -1,6 +1,8 @@
+# pnpm은 허용한 패키지의 설치 스크립트만 실행한다.
 allowBuilds:
+  # Vite가 쓰는 esbuild 바이너리를 설치 시점에 검증한다.
   esbuild: true
+  # Astro 이미지 최적화와 wrangler(miniflare)가 쓰는 네이티브 모듈이다.
   sharp: true
-onlyBuiltDependencies:
-  - esbuild
-  - sharp
+  # wrangler dev가 로컬에서 Workers 런타임을 띄울 때 쓰는 바이너리를 내려받는다.
+  workerd: true
