@@ -6,6 +6,8 @@ tags:
   - test
   - markdown
 draft: true
+project: project-check
+caseOrder: 1
 ---
 
 이 글은 2단계 블로그 기능을 확인하려고 넣은 검증용 글이다. `draft: true`라서 프로덕션 빌드에는 나오지 않는다.
