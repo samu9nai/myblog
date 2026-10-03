@@ -83,3 +83,68 @@
     @apply outline-accent outline-2 outline-offset-2;
   }
 }
+
+/* 글 본문(Markdown) 스타일. 코드 블록 테마는 따로 정한다. */
+@layer components {
+  .prose {
+    @apply leading-relaxed;
+
+    & > * + * {
+      @apply mt-5;
+    }
+
+    & h2 {
+      @apply mt-12 text-xl font-bold;
+    }
+
+    & h3 {
+      @apply mt-8 text-lg font-semibold;
+    }
+
+    & a {
+      @apply text-accent underline underline-offset-4;
+    }
+
+    & ul {
+      @apply list-disc pl-6;
+    }
+
+    & ol {
+      @apply list-decimal pl-6;
+    }
+
+    & li > ul,
+    & li > ol {
+      @apply mt-1;
+    }
+
+    & blockquote {
+      @apply border-border text-muted border-l-4 pl-4;
+    }
+
+    & :not(pre) > code {
+      @apply bg-surface rounded px-1.5 py-0.5 font-mono text-[0.9em];
+    }
+
+    & pre {
+      @apply overflow-x-auto rounded-md p-4 font-mono text-sm leading-normal;
+    }
+
+    & table {
+      @apply block w-full overflow-x-auto text-sm;
+    }
+
+    & th,
+    & td {
+      @apply border-border border px-3 py-2 text-left;
+    }
+
+    & th {
+      @apply bg-surface font-semibold;
+    }
+
+    & hr {
+      @apply border-border my-10;
+    }
+  }
+}
