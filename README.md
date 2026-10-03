@@ -54,3 +54,7 @@ Cloudflare 대시보드의 Workers Builds가 GitHub 저장소 `samu9nai/myblog`�
 | Worker 이름 | `samu9nai` (`wrangler.jsonc`의 `name`과 같아야 합니다) |
 
 `wrangler.jsonc`는 `dist`를 정적 자산으로 올리고, 없는 경로에는 `404.html`을 돌려줍니다.
+
+## 라이선스
+
+소스 코드는 [MIT 라이선스](./LICENSE)를 따릅니다. `src/content/`, `src/data/`, `public/` 아래의 글, 프로젝트 소개, 이력서 데이터, 이미지는 MIT 라이선스에 포함되지 않으며 저작권은 Mingyu Joung에게 있습니다.
