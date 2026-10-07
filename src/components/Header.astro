@@ -7,7 +7,7 @@ const path = Astro.url.pathname
 const isCurrent = (href: string) => path.startsWith(href)
 ---
 
-<header class="border-border flex items-center justify-between border-b py-5">
+<header class="border-border flex items-center justify-between border-b py-5 print:hidden">
   <a
     href="/"
     class="font-mono font-semibold">

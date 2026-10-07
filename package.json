@@ -13,6 +13,7 @@
     "deploy": "wrangler deploy",
     "astro": "astro",
     "type-check": "astro check",
+    "test": "node --test 'src/**/*.test.ts'",
     "lint": "oxlint --type-aware --max-warnings=0",
     "lint:fix": "oxlint --type-aware --fix --max-warnings=0",
     "format": "prettier --write .",
