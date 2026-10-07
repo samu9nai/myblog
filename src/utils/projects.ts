@@ -12,9 +12,10 @@ let checked: Promise<void> | undefined
  */
 export const checkProjects = () =>
   (checked ??= (async () => {
-    const [projects, posts] = await Promise.all([
+    const [projects, posts, resume] = await Promise.all([
       getCollection('projects'),
-      getCollection('posts')
+      getCollection('posts'),
+      getCollection('resume')
     ])
     const errors: string[] = []
 
@@ -39,7 +40,13 @@ export const checkProjects = () =>
         .map(
           project =>
             [`프로젝트 ${project.id}`, project.data.basedOn?.id] as const
-        )
+        ),
+      ...resume.flatMap(({ data }) =>
+        [
+          ...data.experience.flatMap(item => item.projects),
+          ...data.projects
+        ].map(item => [`이력서 항목 ${item.name}`, item.project?.id] as const)
+      )
     ]
     for (const [from, id] of references) {
       if (id === undefined) continue
