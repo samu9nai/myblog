@@ -23,7 +23,7 @@
 
 <dialog
   id="search-dialog"
-  aria-label="글 검색"
+  aria-label="글과 프로젝트 검색"
   class="bg-bg text-fg border-border mx-auto mt-[12vh] w-[calc(100%-2rem)] max-w-xl rounded-lg border p-0 backdrop:bg-black/40">
   <input
     id="search-input"
@@ -33,7 +33,7 @@
     aria-controls="search-results"
     aria-autocomplete="list"
     aria-label="검색어"
-    placeholder="제목, 설명, 태그로 찾기"
+    placeholder="제목, 설명, 태그, 기술 스택으로 찾기"
     autocomplete="off"
     class="border-border placeholder:text-muted w-full border-b bg-transparent px-4 py-3 outline-none"
   />
@@ -49,6 +49,7 @@
 
 <script>
   interface Entry {
+    kind: 'post' | 'project'
     title: string
     description: string
     tags: string[]
@@ -71,7 +72,7 @@
       return response.json() as Promise<Entry[]>
     }))
 
-  // 모든 검색어가 제목·설명·태그 어딘가에 들어 있는 글만 남긴다.
+  // 모든 검색어가 제목·설명·태그 어딘가에 들어 있는 항목만 남긴다.
   const match = (all: Entry[], query: string) => {
     const terms = query.toLowerCase().split(/\s+/).filter(Boolean)
     return all
@@ -101,6 +102,12 @@
         const title = document.createElement('span')
         title.className = 'block font-medium'
         title.textContent = entry.title
+        if (entry.kind === 'project') {
+          const kind = document.createElement('span')
+          kind.className = 'text-muted ml-2 font-mono text-xs font-normal'
+          kind.textContent = '프로젝트'
+          title.append(kind)
+        }
 
         const description = document.createElement('span')
         description.className = 'text-muted block truncate text-sm'
@@ -132,8 +139,8 @@
     }
     active = 0
     if (results.length > 0) render()
-    else if (query === '') render('아직 발행한 글이 없습니다.')
-    else render(`'${query}'에 맞는 글이 없습니다.`)
+    else if (query === '') render('아직 공개한 글과 프로젝트가 없습니다.')
+    else render(`'${query}'에 맞는 글과 프로젝트가 없습니다.`)
   }
 
   const open = () => {
