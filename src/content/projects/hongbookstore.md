@@ -16,13 +16,13 @@ stack:
   - Spring Boot 3.5
   - Spring Security
   - OAuth2 Client
-  - Spring Data JPA
   - MySQL
+  - React 19
+  - Spring Data JPA
   - Redis
   - WebSocket (STOMP)
   - SSE
   - GCP Cloud Storage
-  - React 19
   - Vite 6
   - TanStack Query 5
   - styled-components

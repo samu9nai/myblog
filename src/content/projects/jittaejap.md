@@ -14,17 +14,17 @@ role:
 stack:
   - Java 21
   - Spring Boot 4.1
-  - Spring Data JPA
-  - Spring Security
-  - Flyway
   - PostgreSQL 18
   - pgvector
   - Vue 3
+  - FastAPI
+  - Spring Data JPA
+  - Spring Security
+  - Flyway
   - TypeScript
   - Vite
   - Tailwind CSS 4
   - Python 3.12
-  - FastAPI
   - OpenAI gpt-4o-mini
   - Docker Compose
   - Nginx

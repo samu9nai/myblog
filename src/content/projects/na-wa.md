@@ -12,15 +12,15 @@ role:
   - 리포트 비교 API·UI (GROUP·SIMILAR)
   - 다국어·CJK 타이포그래피
 stack:
-  - Java 17
+  - Vue 3.5
+  - TypeScript 6
   - Spring MVC 5.3
   - Spring Security 5.8
   - MyBatis 3.5
   - MySQL 8.4
+  - Java 17
   - Redis 7
   - Flyway
-  - Vue 3.5
-  - TypeScript 6
   - Vite 8
   - Pinia
   - TanStack Vue Query 5

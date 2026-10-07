@@ -11,22 +11,22 @@ role:
   - CI·커밋 훅·의존성 업데이트 자동화 (GitHub Actions, husky·lint-staged, Renovate)
   - 미사용 의존성 정리와 직접 의존성 취약점 해소
 stack:
-  - Java 21
+  - Gradle (Kotlin DSL)
+  - pnpm
+  - GitHub Actions
+  - Renovate
   - Spring Boot 3.5
+  - React 19
+  - Java 21
   - Spring Security
   - Spring Data JPA
   - MySQL
   - Redis
-  - Gradle (Kotlin DSL)
-  - React 19
   - Vite 7
-  - pnpm
   - TypeScript (도입 중)
   - oxlint
   - Vitest
   - Playwright
-  - GitHub Actions
-  - Renovate
 links:
   repo: https://github.com/samu9nai/hongbookstore
 order: 4
