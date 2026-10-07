@@ -1,11 +1,21 @@
 ---
 import { site } from '@/site'
+import { buildCommit } from '@/utils/build'
 ---
 
-<footer class="border-border text-muted flex items-center justify-between border-t py-6 text-sm print:hidden">
-  <span>
-    © {new Date().getFullYear()} {site.name}
-  </span>
+<footer class="border-border text-muted flex items-end justify-between border-t py-6 text-sm print:hidden">
+  <div class="flex flex-col gap-1">
+    <span>
+      © {new Date().getFullYear()} {site.name}
+    </span>
+    {buildCommit && (
+      <a
+        href={`${site.repo}/commit/${buildCommit.sha}`}
+        class="hover:text-fg font-mono text-xs transition-colors">
+        build {buildCommit.short} · {buildCommit.date}
+      </a>
+    )}
+  </div>
   <a
     href={site.github}
     class="hover:text-fg transition-colors">

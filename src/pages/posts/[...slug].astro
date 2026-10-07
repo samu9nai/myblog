@@ -93,5 +93,16 @@ const project = post.data.project && (await getEntry(post.data.project))
     )
   }
 
-  if (diagrams.length > 0) void draw()
+  // 첫 그림이 화면에 가까워질 때 내려받아, 첫 화면을 그리는 동안 mermaid가 끼어들지 않게 한다.
+  if (diagrams.length > 0) {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return
+        observer.disconnect()
+        void draw()
+      },
+      { rootMargin: '400px' }
+    )
+    diagrams.forEach(diagram => observer.observe(diagram))
+  }
 </script>

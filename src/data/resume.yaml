@@ -8,9 +8,17 @@ profile:
   summary: 'Spring Framework(WAR)와 Spring Boot 두 환경에서 인증·동시성·집계 API를 설계하고, 고친 결과를 테스트로 증명해 온 백엔드 개발자입니다. 두 팀 프로젝트(5명·4주, 5명·해커톤)에서 서버 초기 구성, OAuth 2.0/OIDC 인증, 결정론적 규칙 엔진을 맡았습니다.'
 highlights:
   - text: '인증·보안 — Google·LINE·카카오 OAuth를 라이브러리 위임 없이 구현하고, 회전형 refresh 토큰의 재사용 탐지와 브라우저 바인딩까지 하드닝'
+    source: 'NA-WA PR #41'
+    link: 'https://github.com/T-ravelers/NA-WA/pull/41'
   - text: '데이터 정합성 — Hibernate lost update를 실제 PostgreSQL에서 재현하고, 수정을 되돌려 테스트가 실패하는 것까지 확인'
+    source: '소때잡 server PR #42'
+    link: 'https://github.com/jittaejap/sottaejap-server/pull/42'
   - text: '설계 경계 — AI는 입구와 출구에만 두고, 판단·집계·금액 계산은 서버의 결정론적 규칙 엔진이 소유하도록 분리'
+    source: '소때잡 server PR #6'
+    link: 'https://github.com/jittaejap/sottaejap-server/pull/6'
   - text: '검증 기록 — PR마다 자동 테스트·수동 검증·실행하지 못한 검증을 나눠 적고, 로컬 통과와 CI 통과를 구분'
+    source: 'NA-WA PR #220'
+    link: 'https://github.com/T-ravelers/NA-WA/pull/220'
 projects:
   - name: 'NA-WA'
     project: 'na-wa'

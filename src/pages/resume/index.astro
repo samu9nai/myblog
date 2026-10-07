@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import Highlights from '@/components/Highlights.astro'
 import ResumeProject from '@/components/ResumeProject.astro'
 import { formatMonths, totalMonths } from '@/utils/duration'
 import { formatPeriod } from '@/utils/projects'
@@ -36,24 +37,7 @@ const githubLabel =
   {highlights.length > 0 && (
     <section class="mt-10 break-inside-avoid">
       <h2 class="border-border border-b pb-2 text-xl font-bold">핵심 역량</h2>
-      <ul class="mt-4 list-disc space-y-1.5 pl-5 leading-relaxed">
-        {highlights.map(highlight => (
-          <li>
-            {highlight.link ? (
-              <a
-                href={highlight.link}
-                class="text-accent underline underline-offset-4">
-                {highlight.text}
-              </a>
-            ) : (
-              highlight.text
-            )}
-            {highlight.source && (
-              <span class="text-muted ml-2 text-sm">{highlight.source}</span>
-            )}
-          </li>
-        ))}
-      </ul>
+      <Highlights highlights={highlights} />
     </section>
   )}
 

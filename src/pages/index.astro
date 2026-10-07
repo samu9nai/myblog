@@ -1,9 +1,97 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import { site } from '@/site'
+import Highlights from '@/components/Highlights.astro'
+import { formatDate, getPosts } from '@/utils/posts'
+import { formatKind, formatPeriod, getProjects } from '@/utils/projects'
+import { getResume } from '@/utils/resume'
+
+const { profile, highlights } = await getResume()
+const projects = (await getProjects()).slice(0, 3)
+const posts = (await getPosts()).slice(0, 3)
 ---
 
 <Layout>
-  <h1 class="text-2xl font-bold">{site.name}</h1>
-  <p class="text-muted mt-3">사이트를 새로 만들고 있습니다.</p>
+  <section>
+    <h1 class="text-2xl font-bold">{profile.name}</h1>
+    <p class="mt-1 text-lg">{profile.title}</p>
+    <p class="mt-6 leading-relaxed">{profile.summary}</p>
+    <p class="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+      <a
+        href="/resume/"
+        class="text-accent font-semibold underline underline-offset-4">
+        이력서 보기
+      </a>
+      <a
+        href="/projects/"
+        class="text-accent font-semibold underline underline-offset-4">
+        프로젝트 보기
+      </a>
+    </p>
+  </section>
+
+  {highlights.length > 0 && (
+    <section class="mt-14">
+      <h2 class="text-xl font-bold">하이라이트</h2>
+      <Highlights highlights={highlights} />
+    </section>
+  )}
+
+  {projects.length > 0 && (
+    <section class="mt-14">
+      <div class="flex items-baseline justify-between">
+        <h2 class="text-xl font-bold">프로젝트</h2>
+        <a
+          href="/projects/"
+          class="text-muted hover:text-accent text-sm transition-colors">
+          프로젝트 전체 보기
+        </a>
+      </div>
+      <ul class="mt-6 flex flex-col gap-6">
+        {projects.map(project => (
+          <li>
+            <a
+              href={`/projects/${project.id}/`}
+              class="group block">
+              <h3 class="group-hover:text-accent text-lg font-semibold transition-colors">
+                {project.data.name}
+              </h3>
+              <p class="text-muted mt-1">{project.data.summary}</p>
+            </a>
+            <p class="text-muted mt-2 font-mono text-sm">
+              {formatPeriod(project.data.period)} · {formatKind(project.data)}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {posts.length > 0 && (
+    <section class="mt-14">
+      <div class="flex items-baseline justify-between">
+        <h2 class="text-xl font-bold">최근 글</h2>
+        <a
+          href="/posts/"
+          class="text-muted hover:text-accent text-sm transition-colors">
+          글 전체 보기
+        </a>
+      </div>
+      <ul class="mt-6 flex flex-col gap-4">
+        {posts.map(post => (
+          <li class="flex flex-col gap-x-4 sm:flex-row sm:items-baseline">
+            <time
+              datetime={post.data.pubDate.toISOString()}
+              class="text-muted shrink-0 font-mono text-sm">
+              {formatDate(post.data.pubDate)}
+            </time>
+            <a
+              href={`/posts/${post.id}/`}
+              class="hover:text-accent transition-colors">
+              {post.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 </Layout>
