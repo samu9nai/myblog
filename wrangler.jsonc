@@ -13,5 +13,19 @@
   "previews": {},
   // 미리보기마다 https://<브랜치>-blog.samu9nai.workers.dev 주소를 만든다.
   // Worker 단위 설정이라 프로덕션 브랜치의 wrangler deploy로 반영된다.
-  "preview_urls": true
+  "preview_urls": true,
+  // 호출 로그를 모두(샘플링 1) Workers Logs에 남긴다. 트레이스는 끈다.
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "traces": {
+      "enabled": false,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  }
 }
