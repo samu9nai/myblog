@@ -1,0 +1,108 @@
+---
+import { getEntry, render } from 'astro:content'
+import Layout from '@/layouts/Layout.astro'
+import { formatDate, getPosts } from '@/utils/posts'
+
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }))
+}
+
+const { post } = Astro.props
+const { title, description, pubDate, updatedDate, tags } = post.data
+const { Content } = await render(post)
+const project = post.data.project && (await getEntry(post.data.project))
+---
+
+<Layout
+  title={title}
+  description={description}
+  ogImage={`/og/${post.id}.png`}
+  ogType="article">
+  <article>
+    <header class="border-border border-b pb-6">
+      {project && (
+        <a
+          href={`/projects/${project.id}/`}
+          class="text-muted hover:text-accent mb-3 inline-block text-sm transition-colors">
+          ← {project.data.name} 사례 {post.data.caseOrder}
+        </a>
+      )}
+      <h1 class="text-2xl font-bold">{title}</h1>
+      <p class="text-muted mt-3 font-mono text-sm">
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        {updatedDate && (
+          <>
+            {' · 수정 '}
+            <time datetime={updatedDate.toISOString()}>
+              {formatDate(updatedDate)}
+            </time>
+          </>
+        )}
+      </p>
+      {tags.length > 0 && (
+        <ul
+          aria-label="태그"
+          class="text-muted mt-2 flex flex-wrap gap-x-3 font-mono text-sm">
+          {tags.map(tag => (
+            <li>
+              <a
+                href={`/posts/tags/${tag}/`}
+                class="hover:text-accent transition-colors">
+                #{tag}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </header>
+    <div class="prose mt-8">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<script>
+  // mermaid 그림이 있는 글에서만 mermaid를 내려받는다. 테마가 바뀌면 다시 그린다.
+  const diagrams = [...document.querySelectorAll<HTMLElement>('pre.mermaid')]
+
+  const draw = async () => {
+    const { default: mermaid } = await import('mermaid')
+    const sources = diagrams.map(diagram => diagram.textContent ?? '')
+
+    const render = () => {
+      mermaid.initialize({
+        startOnLoad: false,
+        // 가로로 긴 그림을 본문 폭에 맞춰 줄이면 글자를 읽을 수 없어 가로 스크롤로 보여 준다.
+        flowchart: { useMaxWidth: false },
+        sequence: { useMaxWidth: false },
+        theme:
+          document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default'
+      })
+      diagrams.forEach((diagram, index) => {
+        diagram.removeAttribute('data-processed')
+        diagram.textContent = sources[index]
+      })
+      return mermaid.run({ nodes: diagrams })
+    }
+
+    await render()
+    new MutationObserver(() => void render()).observe(
+      document.documentElement,
+      { attributes: true, attributeFilter: ['data-theme'] }
+    )
+  }
+
+  // 첫 그림이 화면에 가까워질 때 내려받아, 첫 화면을 그리는 동안 mermaid가 끼어들지 않게 한다.
+  if (diagrams.length > 0) {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return
+        observer.disconnect()
+        void draw()
+      },
+      { rootMargin: '400px' }
+    )
+    diagrams.forEach(diagram => observer.observe(diagram))
+  }
+</script>

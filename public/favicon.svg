@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img">
-  <title>samu9nai.log</title>
-  <rect width="128" height="128" rx="28" fill="#eaf8ff" />
-  <rect x="8" y="8" width="112" height="112" rx="22" fill="none" stroke="#83d6f7" stroke-width="8" />
-  <circle cx="102" cy="26" r="13" fill="#b84278" />
-  <text x="22" y="85" fill="#223149" font-family="Arial, sans-serif" font-size="58" font-weight="700" letter-spacing="-5">S9</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1c1917"/><text x="16" y="22" font-family="ui-monospace,monospace" font-size="16" font-weight="600" fill="#fafaf9" text-anchor="middle">s9</text></svg>

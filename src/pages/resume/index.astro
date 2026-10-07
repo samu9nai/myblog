@@ -1,0 +1,136 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Highlights from '@/components/Highlights.astro'
+import ResumeProject from '@/components/ResumeProject.astro'
+import { formatMonths, totalMonths } from '@/utils/duration'
+import { formatPeriod } from '@/utils/projects'
+import { currentMonth, getResume } from '@/utils/resume'
+
+const { profile, highlights, experience, projects, education, skills, awards } =
+  await getResume()
+const careerMonths = totalMonths(experience, currentMonth())
+const githubLabel =
+  new URL(profile.github).host + new URL(profile.github).pathname
+---
+
+<Layout
+  title="이력서"
+  description={profile.summary}>
+  <header class="break-inside-avoid">
+    <h1 class="text-2xl font-bold">{profile.name}</h1>
+    <p class="mt-1 text-lg">{profile.title}</p>
+    <p class="text-muted mt-3 flex flex-wrap gap-x-4 font-mono text-sm">
+      <a
+        href={`mailto:${profile.email}`}
+        class="hover:text-accent transition-colors">
+        {profile.email}
+      </a>
+      <a
+        href={profile.github}
+        class="hover:text-accent transition-colors">
+        {githubLabel}
+      </a>
+    </p>
+    <p class="mt-6 leading-relaxed">{profile.summary}</p>
+  </header>
+
+  {highlights.length > 0 && (
+    <section class="mt-10 break-inside-avoid">
+      <h2 class="border-border border-b pb-2 text-xl font-bold">핵심 역량</h2>
+      <Highlights highlights={highlights} />
+    </section>
+  )}
+
+  {experience.length > 0 && (
+    <section class="mt-10">
+      <h2 class="border-border flex items-baseline justify-between border-b pb-2 break-after-avoid">
+        <span class="text-xl font-bold">경력</span>
+        <span class="text-muted font-mono text-sm">
+          총 {formatMonths(careerMonths)}
+        </span>
+      </h2>
+      {experience.map(job => (
+        <div class="mt-6">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 break-after-avoid">
+            <h3 class="text-lg font-semibold">
+              {job.org}
+              <span class="text-muted ml-2 text-base font-normal">
+                {job.role}
+              </span>
+            </h3>
+            <p class="text-muted font-mono text-sm">{formatPeriod(job)}</p>
+          </div>
+          {job.stack.length > 0 && (
+            <p class="text-muted mt-1 text-sm">{job.stack.join(', ')}</p>
+          )}
+          {job.projects.map(item => (
+            <ResumeProject item={item} />
+          ))}
+        </div>
+      ))}
+    </section>
+  )}
+
+  {projects.length > 0 && (
+    <section class="mt-10">
+      <h2 class="border-border border-b pb-2 text-xl font-bold break-after-avoid">
+        프로젝트
+      </h2>
+      {projects.map(item => (
+        <ResumeProject item={item} />
+      ))}
+    </section>
+  )}
+
+  <section class="mt-10 break-inside-avoid">
+    <h2 class="border-border border-b pb-2 text-xl font-bold">기술</h2>
+    <dl class="mt-4 grid grid-cols-[6rem_1fr] gap-x-4 gap-y-2 text-sm">
+      {skills.map(skill => (
+        <>
+          <dt class="text-muted">{skill.group}</dt>
+          <dd>{skill.items.join(', ')}</dd>
+        </>
+      ))}
+    </dl>
+  </section>
+
+  {education.length > 0 && (
+    <section class="mt-10 break-inside-avoid">
+      <h2 class="border-border border-b pb-2 text-xl font-bold">교육</h2>
+      <ul class="mt-4 space-y-2">
+        {education.map(item => (
+          <li class="flex flex-wrap items-baseline justify-between gap-x-4">
+            <span>
+              <span class="font-semibold">{item.school}</span>
+              {item.degree && (
+                <span class="text-muted ml-2 text-sm">{item.degree}</span>
+              )}
+            </span>
+            <span class="text-muted font-mono text-sm">
+              {formatPeriod(item)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {awards.length > 0 && (
+    <section class="mt-10 break-inside-avoid">
+      <h2 class="border-border border-b pb-2 text-xl font-bold">수상</h2>
+      <ul class="mt-4 space-y-2">
+        {awards.map(award => (
+          <li class="flex flex-wrap items-baseline justify-between gap-x-4">
+            <span>
+              <span class="font-semibold">{award.name}</span>
+              <span class="text-muted ml-2 text-sm">{award.issuer}</span>
+            </span>
+            <span class="text-muted font-mono text-sm">
+              {award.date.replace('-', '.')}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Layout>

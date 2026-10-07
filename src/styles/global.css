@@ -1,60 +1,194 @@
-@import "tailwindcss";
-@import "@fontsource/maple-mono/400.css";
-@import "@fontsource/maple-mono/400-italic.css";
-@import "@fontsource/maple-mono/600.css";
-@import "./fonts.css";
-@import "./theme.css";
-@import "./typography.css";
-@import "rehype-callouts/theme/obsidian";
+@import 'tailwindcss';
+@import '@fontsource/maple-mono/400.css';
+@import '@fontsource/maple-mono/600.css';
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src:
+    local('Spoqa Han Sans Neo Regular'),
+    url('../../node_modules/spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff2')
+      format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src:
+    local('Spoqa Han Sans Neo Medium'),
+    url('../../node_modules/spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Medium.woff2')
+      format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src:
+    local('Spoqa Han Sans Neo Bold'),
+    url('../../node_modules/spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.woff2')
+      format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 테마는 <html data-theme>로 정한다. 값은 Layout의 인라인 스크립트가 넣는다. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  --bg: #fafaf9;
+  --fg: #1c1917;
+  --muted: #57534e;
+  --border: #e7e5e4;
+  --surface: #f5f5f4;
+  --accent: #1d4ed8;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0c0a09;
+  --fg: #e7e5e4;
+  --muted: #a8a29e;
+  --border: #292524;
+  --surface: #1c1917;
+  --accent: #93c5fd;
+  color-scheme: dark;
+}
+
+/* 인쇄(PDF로 저장)는 다크 모드여도 흰 종이에 라이트 색으로 찍는다. */
+@media print {
+  :root,
+  :root[data-theme='dark'] {
+    --bg: #fff;
+    --fg: #1c1917;
+    --muted: #57534e;
+    --border: #e7e5e4;
+    --surface: #f5f5f4;
+    --accent: #1d4ed8;
+    color-scheme: light;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 14mm 12mm;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-surface: var(--surface);
+  --color-accent: var(--accent);
+
+  --font-sans:
+    'Spoqa Han Sans Neo', 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui,
+    sans-serif;
+  --font-mono:
+    'Maple Mono', 'D2Coding', ui-monospace, Menlo, Consolas, monospace;
+}
 
 @layer base {
   html {
-    font-family: var(--font-app);
+    @apply bg-bg text-fg font-sans antialiased;
+    word-break: keep-all;
   }
 
-  button,
-  input,
-  select,
-  textarea {
-    font: inherit;
-  }
-
-  * {
-    @apply border-border outline-accent/75;
-    scrollbar-width: auto;
-    scrollbar-color: var(--color-muted) transparent;
-  }
-  a,
-  button {
-    @apply outline-accent outline-offset-1 focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
-  }
-  button:not(:disabled),
-  [role="button"]:not(:disabled) {
-    cursor: pointer;
-  }
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-family: var(--font-display);
-    font-weight: 700;
+  :focus-visible {
+    @apply outline-accent outline-2 outline-offset-2;
   }
 }
 
-@utility max-w-app {
-  @apply max-w-3xl;
+/* 글 본문(Markdown) 스타일. 코드 블록은 Expressive Code가 그린다. */
+@layer components {
+  .prose {
+    @apply leading-relaxed;
+
+    & > * + * {
+      @apply mt-5;
+    }
+
+    & h2 {
+      @apply mt-12 text-xl font-bold;
+    }
+
+    & h3 {
+      @apply mt-8 text-lg font-semibold;
+    }
+
+    & a {
+      @apply text-accent underline underline-offset-4;
+    }
+
+    & ul {
+      @apply list-disc pl-6;
+    }
+
+    & ol {
+      @apply list-decimal pl-6;
+    }
+
+    & li > ul,
+    & li > ol {
+      @apply mt-1;
+    }
+
+    & blockquote {
+      @apply border-border text-muted border-l-4 pl-4;
+    }
+
+    & :not(pre) > code {
+      @apply bg-surface rounded px-1.5 py-0.5 font-mono text-[0.9em];
+    }
+
+    & table {
+      @apply block w-full overflow-x-auto text-sm;
+    }
+
+    & th,
+    & td {
+      @apply border-border border px-3 py-2 text-left;
+    }
+
+    & th {
+      @apply bg-surface font-semibold;
+    }
+
+    & hr {
+      @apply border-border my-10;
+    }
+
+    /* 그리기 전에는 mermaid 원문이 잠깐 보인다. */
+    & pre.mermaid {
+      @apply text-muted flex justify-center-safe overflow-x-auto font-mono text-sm;
+
+      & > svg {
+        @apply max-w-none shrink-0;
+      }
+    }
+  }
 }
 
-@utility app-layout {
-  @apply max-w-app mx-auto w-full px-4;
-}
-
-@utility active-nav {
-  @apply underline decoration-wavy decoration-2 underline-offset-8;
-}
-
-:target {
-  scroll-margin-block: 1rem;
+/* 예전 블로그에서 옮긴 Maple Mono 리거처와 글자 변형 설정이다. */
+.prose .expressive-code pre > code {
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings:
+    'calt' 1,
+    'liga' 1,
+    'cv01' 1,
+    'cv02' 1,
+    'cv33' 1,
+    'cv34' 1,
+    'cv35' 1,
+    'cv36' 1,
+    'cv61' 1,
+    'cv62' 1,
+    'ss05' 1,
+    'ss06' 1,
+    'ss07' 1,
+    'ss08' 1;
 }

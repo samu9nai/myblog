@@ -1,0 +1,190 @@
+<button
+  type="button"
+  id="search-open"
+  aria-label="검색"
+  aria-keyshortcuts="Meta+K Control+K"
+  title="검색 (⌘K)"
+  class="text-muted hover:text-fg hover:bg-surface -m-2 rounded-md p-2 transition-colors">
+  <svg
+    class="size-4"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    aria-hidden="true">
+    <circle
+      cx="11"
+      cy="11"
+      r="7"></circle>
+    <path d="m20 20-3.5-3.5"></path>
+  </svg>
+</button>
+
+<dialog
+  id="search-dialog"
+  aria-label="글과 프로젝트 검색"
+  class="bg-bg text-fg border-border mx-auto mt-[12vh] w-[calc(100%-2rem)] max-w-xl rounded-lg border p-0 backdrop:bg-black/40">
+  <input
+    id="search-input"
+    type="search"
+    role="combobox"
+    aria-expanded="true"
+    aria-controls="search-results"
+    aria-autocomplete="list"
+    aria-label="검색어"
+    placeholder="제목, 설명, 태그, 기술 스택으로 찾기"
+    autocomplete="off"
+    class="border-border placeholder:text-muted w-full border-b bg-transparent px-4 py-3 outline-none"
+  />
+  <ul
+    id="search-results"
+    role="listbox"
+    aria-label="검색 결과"
+    class="max-h-[50vh] overflow-y-auto p-2"></ul>
+  <p
+    id="search-empty"
+    class="text-muted hidden px-4 pb-4 text-sm"></p>
+</dialog>
+
+<script>
+  interface Entry {
+    kind: 'post' | 'project'
+    title: string
+    description: string
+    tags: string[]
+    url: string
+  }
+
+  const openButton = document.getElementById('search-open')!
+  const dialog = document.getElementById('search-dialog') as HTMLDialogElement
+  const input = document.getElementById('search-input') as HTMLInputElement
+  const list = document.getElementById('search-results')!
+  const empty = document.getElementById('search-empty')!
+
+  let entries: Promise<Entry[]> | undefined
+  let results: Entry[] = []
+  let active = 0
+
+  const load = () =>
+    (entries ??= fetch('/search.json').then(response => {
+      if (!response.ok) throw new Error(`search.json ${response.status}`)
+      return response.json() as Promise<Entry[]>
+    }))
+
+  // 모든 검색어가 제목·설명·태그 어딘가에 들어 있는 항목만 남긴다.
+  const match = (all: Entry[], query: string) => {
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean)
+    return all
+      .filter(entry => {
+        const text = [entry.title, entry.description, ...entry.tags]
+          .join(' ')
+          .toLowerCase()
+        return terms.every(term => text.includes(term))
+      })
+      .slice(0, 8)
+  }
+
+  const render = (message = '') => {
+    list.replaceChildren(
+      ...results.map((entry, index) => {
+        const item = document.createElement('li')
+        item.id = `search-option-${index}`
+        item.setAttribute('role', 'option')
+        item.setAttribute('aria-selected', String(index === active))
+
+        const link = document.createElement('a')
+        link.href = entry.url
+        link.tabIndex = -1
+        link.className =
+          'block rounded-md px-3 py-2 in-aria-selected:bg-surface hover:bg-surface'
+
+        const title = document.createElement('span')
+        title.className = 'block font-medium'
+        title.textContent = entry.title
+        if (entry.kind === 'project') {
+          const kind = document.createElement('span')
+          kind.className = 'text-muted ml-2 font-mono text-xs font-normal'
+          kind.textContent = '프로젝트'
+          title.append(kind)
+        }
+
+        const description = document.createElement('span')
+        description.className = 'text-muted block truncate text-sm'
+        description.textContent = entry.description
+
+        link.append(title, description)
+        item.append(link)
+        return item
+      })
+    )
+    empty.textContent = message
+    empty.classList.toggle('hidden', message === '')
+    if (results.length > 0) {
+      input.setAttribute('aria-activedescendant', `search-option-${active}`)
+    } else {
+      input.removeAttribute('aria-activedescendant')
+    }
+  }
+
+  const update = async () => {
+    const query = input.value.trim()
+    try {
+      results = match(await load(), query)
+    } catch {
+      entries = undefined
+      results = []
+      render('검색 목록을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.')
+      return
+    }
+    active = 0
+    if (results.length > 0) render()
+    else if (query === '') render('아직 공개한 글과 프로젝트가 없습니다.')
+    else render(`'${query}'에 맞는 글과 프로젝트가 없습니다.`)
+  }
+
+  const open = () => {
+    dialog.showModal()
+    input.select()
+    void update()
+  }
+
+  const move = (step: number) => {
+    if (results.length === 0) return
+    active = (active + step + results.length) % results.length
+    render()
+    document
+      .getElementById(`search-option-${active}`)
+      ?.scrollIntoView({ block: 'nearest' })
+  }
+
+  openButton.addEventListener('click', open)
+
+  document.addEventListener('keydown', event => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault()
+      if (dialog.open) dialog.close()
+      else open()
+    }
+  })
+
+  input.addEventListener('input', () => void update())
+
+  input.addEventListener('keydown', event => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      move(1)
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      move(-1)
+    } else if (event.key === 'Enter' && results.length > 0) {
+      event.preventDefault()
+      location.href = results[active].url
+    }
+  })
+
+  // 바깥(배경)을 누르면 닫는다.
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog) dialog.close()
+  })
+</script>

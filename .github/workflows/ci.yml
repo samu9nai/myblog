@@ -1,54 +1,56 @@
 name: CI
 
+on:
+  pull_request:
+  push:
+    branches: [main]
+
 permissions:
   contents: read
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
-  workflow_call:
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build:
-    name: Code standards & build
-    runs-on: ubuntu-24.04
+  check:
+    name: 검사와 빌드
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
-      - name: "☁️ Checkout repository"
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
-      - name: "📦 Install pnpm"
-        uses: pnpm/action-setup@v5
+      - name: pnpm 설정
+        uses: pnpm/action-setup@v6
         with:
-          version: 10.31.0
+          run_install: false
 
-      - name: Use Node.js 24
-        uses: actions/setup-node@v5
+      - name: Node.js 설정
+        uses: actions/setup-node@v7
         with:
-          node-version: 24
-          cache: "pnpm"
+          node-version-file: .node-version
+          cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: "📦 Install dependencies"
+      - name: 의존성 설치
         run: pnpm install --frozen-lockfile
 
-      - name: "🔎 Lint code"
-        run: pnpm run lint
+      - name: 서식 검사
+        run: pnpm format:check
 
-      - name: "📝 Checking code format"
-        run: pnpm run format:check
+      - name: 린트
+        run: pnpm lint
 
-      - name: "🚀 Build the project"
-        run: pnpm run build
+      - name: 타입 검사
+        run: pnpm type-check
+
+      - name: 단위 테스트
+        run: pnpm test
+
+      - name: 프로덕션 빌드
+        run: pnpm build
+
+      # 계정에 올리지 않고 wrangler 설정과 정적 자산 경로만 검증한다.
+      - name: 배포 설정 검사
+        run: pnpm exec wrangler deploy --dry-run

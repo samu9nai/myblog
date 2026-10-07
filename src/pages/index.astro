@@ -1,132 +1,97 @@
 ---
-import { getCollection } from "astro:content";
-import { getRelativeLocaleUrl } from "astro:i18n";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import Layout from "@/layouts/Layout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
-import Card from "@/components/Card.astro";
-import LinkButton from "@/components/LinkButton.astro";
-import { getSortedPosts } from "@/utils/getSortedPosts";
-import { useTranslations } from "@/i18n";
-import config from "@/config";
+import Layout from '@/layouts/Layout.astro'
+import Highlights from '@/components/Highlights.astro'
+import { formatDate, getPosts } from '@/utils/posts'
+import { formatKind, formatPeriod, getProjects } from '@/utils/projects'
+import { getResume } from '@/utils/resume'
 
-const { socials, posts: postsConfig } = config;
-
-const locale = Astro.currentLocale ?? config.site.lang;
-const t = useTranslations(locale);
-
-const posts = await getCollection("posts");
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-const homePath = getRelativeLocaleUrl(locale, "");
+const { profile, highlights } = await getResume()
+const projects = (await getProjects()).slice(0, 3)
+const posts = (await getPosts()).slice(0, 3)
 ---
 
 <Layout>
-  <Header />
-  <main
-    id="main-content"
-    data-layout="index"
-    data-home-path={homePath}
-    class="app-layout"
-  >
-    <section id="hero" class="border-border border-b pt-8 pb-6">
-      <h1
-        class="font-accent my-4 inline-block text-4xl font-normal sm:my-8 sm:text-5xl"
-      >
-        안녕하세요.
-      </h1>
+  <section>
+    <h1 class="text-2xl font-bold">{profile.name}</h1>
+    <p class="mt-1 text-lg">{profile.title}</p>
+    <p class="mt-6 leading-relaxed">{profile.summary}</p>
+    <p class="mt-6 flex flex-wrap gap-x-6 gap-y-2">
       <a
-        target="_blank"
-        href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}rss.xml`}
-        class="inline-block"
-        aria-label="RSS Feed"
-        title="RSS Feed"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
-        />
-        <span class="sr-only">RSS Feed</span>
+        href="/resume/"
+        class="text-accent font-semibold underline underline-offset-4">
+        이력서 보기
       </a>
+      <a
+        href="/projects/"
+        class="text-accent font-semibold underline underline-offset-4">
+        프로젝트 보기
+      </a>
+    </p>
+  </section>
 
-      <p>
-        개발 과정에서 마주친 설계 문제와 선택의 이유, 시행착오를 기록합니다.
-      </p>
-      <p class="mt-2">
-        현재는 경기 결과 기반 모의투자 서비스
-        <LinkButton
-          class="hover:text-accent underline decoration-dashed underline-offset-4"
-          href="https://github.com/samu9nai/fansdaq"
-        >
-          Fansdaq
-        </LinkButton>을 만들고 있습니다.
-      </p>
-      {
-        socials.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
-              {t.home.socialLinks}:
-            </div>
-            <Socials />
-          </div>
-        )
-      }
+  {highlights.length > 0 && (
+    <section class="mt-14">
+      <h2 class="text-xl font-bold">하이라이트</h2>
+      <Highlights highlights={highlights} />
     </section>
+  )}
 
-    {
-      featuredPosts.length > 0 && (
-        <section
-          id="featured"
-          class:list={[
-            "pt-12 pb-6",
-            { "border-border border-b": recentPosts.length > 0 },
-          ]}
-        >
-          <h2 class="text-2xl font-bold tracking-wide">{t.home.featured}</h2>
-          <ul>
-            {featuredPosts.map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
+  {projects.length > 0 && (
+    <section class="mt-14">
+      <div class="flex items-baseline justify-between">
+        <h2 class="text-xl font-bold">프로젝트</h2>
+        <a
+          href="/projects/"
+          class="text-muted hover:text-accent text-sm transition-colors">
+          프로젝트 전체 보기
+        </a>
+      </div>
+      <ul class="mt-6 flex flex-col gap-6">
+        {projects.map(project => (
+          <li>
+            <a
+              href={`/projects/${project.id}/`}
+              class="group block">
+              <h3 class="group-hover:text-accent text-lg font-semibold transition-colors">
+                {project.data.name}
+              </h3>
+              <p class="text-muted mt-1">{project.data.summary}</p>
+            </a>
+            <p class="text-muted mt-2 font-mono text-sm">
+              {formatPeriod(project.data.period)} · {formatKind(project.data)}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-bold tracking-wide">{t.home.recentPosts}</h2>
-          <ul>
-            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <div class="my-8 text-center">
-      <LinkButton href={getRelativeLocaleUrl(locale, "posts")}>
-        {t.home.allPosts}
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
-  </main>
-  <Footer />
+  {posts.length > 0 && (
+    <section class="mt-14">
+      <div class="flex items-baseline justify-between">
+        <h2 class="text-xl font-bold">최근 글</h2>
+        <a
+          href="/posts/"
+          class="text-muted hover:text-accent text-sm transition-colors">
+          글 전체 보기
+        </a>
+      </div>
+      <ul class="mt-6 flex flex-col gap-4">
+        {posts.map(post => (
+          <li class="flex flex-col gap-x-4 sm:flex-row sm:items-baseline">
+            <time
+              datetime={post.data.pubDate.toISOString()}
+              class="text-muted shrink-0 font-mono text-sm">
+              {formatDate(post.data.pubDate)}
+            </time>
+            <a
+              href={`/posts/${post.id}/`}
+              class="hover:text-accent transition-colors">
+              {post.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 </Layout>
-
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
-      ?.dataset;
-    const baseRoot = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-    if (indexLayout?.layout) {
-      sessionStorage.setItem("backUrl", indexLayout.homePath ?? baseRoot);
-    }
-  });
-</script>
