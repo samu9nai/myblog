@@ -61,3 +61,37 @@ const project = post.data.project && (await getEntry(post.data.project))
     </div>
   </article>
 </Layout>
+
+<script>
+  // mermaid 그림이 있는 글에서만 mermaid를 내려받는다. 테마가 바뀌면 다시 그린다.
+  const diagrams = [...document.querySelectorAll<HTMLElement>('pre.mermaid')]
+
+  const draw = async () => {
+    const { default: mermaid } = await import('mermaid')
+    const sources = diagrams.map(diagram => diagram.textContent ?? '')
+
+    const render = () => {
+      mermaid.initialize({
+        startOnLoad: false,
+        // 가로로 긴 그림을 본문 폭에 맞춰 줄이면 글자를 읽을 수 없어 가로 스크롤로 보여 준다.
+        flowchart: { useMaxWidth: false },
+        sequence: { useMaxWidth: false },
+        theme:
+          document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default'
+      })
+      diagrams.forEach((diagram, index) => {
+        diagram.removeAttribute('data-processed')
+        diagram.textContent = sources[index]
+      })
+      return mermaid.run({ nodes: diagrams })
+    }
+
+    await render()
+    new MutationObserver(() => void render()).observe(
+      document.documentElement,
+      { attributes: true, attributeFilter: ['data-theme'] }
+    )
+  }
+
+  if (diagrams.length > 0) void draw()
+</script>
