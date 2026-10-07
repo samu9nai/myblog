@@ -1,14 +1,21 @@
 import { getCollection } from 'astro:content'
+import { checkProjects, isVisible } from '@/utils/projects'
 
 /** 공개할 글을 최신순으로 돌려준다. draft는 개발 서버에서만 보인다. */
 export async function getPosts() {
-  const posts = await getCollection(
-    'posts',
-    ({ data }) => import.meta.env.DEV || !data.draft
-  )
+  await checkProjects()
+  const posts = await getCollection('posts', isVisible)
   return posts.sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   )
+}
+
+/** 프로젝트에 묶인 사례 글을 caseOrder 순으로 돌려준다. */
+export async function getCases(projectId: string) {
+  const posts = await getPosts()
+  return posts
+    .filter(post => post.data.project?.id === projectId)
+    .sort((a, b) => (a.data.caseOrder ?? 0) - (b.data.caseOrder ?? 0))
 }
 
 const dateFormat = new Intl.DateTimeFormat('ko-KR', {

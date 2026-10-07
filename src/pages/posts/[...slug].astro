@@ -1,5 +1,5 @@
 ---
-import { render } from 'astro:content'
+import { getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import { formatDate, getPosts } from '@/utils/posts'
 
@@ -11,6 +11,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props
 const { title, description, pubDate, updatedDate, tags } = post.data
 const { Content } = await render(post)
+const project = post.data.project && (await getEntry(post.data.project))
 ---
 
 <Layout
@@ -20,6 +21,13 @@ const { Content } = await render(post)
   ogType="article">
   <article>
     <header class="border-border border-b pb-6">
+      {project && (
+        <a
+          href={`/projects/${project.id}/`}
+          class="text-muted hover:text-accent mb-3 inline-block text-sm transition-colors">
+          ← {project.data.name} 사례 {post.data.caseOrder}
+        </a>
+      )}
       <h1 class="text-2xl font-bold">{title}</h1>
       <p class="text-muted mt-3 font-mono text-sm">
         <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
@@ -53,3 +61,37 @@ const { Content } = await render(post)
     </div>
   </article>
 </Layout>
+
+<script>
+  // mermaid 그림이 있는 글에서만 mermaid를 내려받는다. 테마가 바뀌면 다시 그린다.
+  const diagrams = [...document.querySelectorAll<HTMLElement>('pre.mermaid')]
+
+  const draw = async () => {
+    const { default: mermaid } = await import('mermaid')
+    const sources = diagrams.map(diagram => diagram.textContent ?? '')
+
+    const render = () => {
+      mermaid.initialize({
+        startOnLoad: false,
+        // 가로로 긴 그림을 본문 폭에 맞춰 줄이면 글자를 읽을 수 없어 가로 스크롤로 보여 준다.
+        flowchart: { useMaxWidth: false },
+        sequence: { useMaxWidth: false },
+        theme:
+          document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default'
+      })
+      diagrams.forEach((diagram, index) => {
+        diagram.removeAttribute('data-processed')
+        diagram.textContent = sources[index]
+      })
+      return mermaid.run({ nodes: diagrams })
+    }
+
+    await render()
+    new MutationObserver(() => void render()).observe(
+      document.documentElement,
+      { attributes: true, attributeFilter: ['data-theme'] }
+    )
+  }
+
+  if (diagrams.length > 0) void draw()
+</script>

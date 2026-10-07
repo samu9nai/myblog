@@ -1,0 +1,126 @@
+---
+import { getEntry, render } from 'astro:content'
+import Layout from '@/layouts/Layout.astro'
+import PostList from '@/components/PostList.astro'
+import { getCases } from '@/utils/posts'
+import { formatKind, formatPeriod, getProjects } from '@/utils/projects'
+
+export async function getStaticPaths() {
+  const projects = await getProjects()
+  return projects.map(project => ({
+    params: { slug: project.id },
+    props: { project }
+  }))
+}
+
+const { project } = Astro.props
+const { data } = project
+const { Content } = await render(project)
+const cases = await getCases(project.id)
+const basedOn = data.basedOn && (await getEntry(data.basedOn))
+
+const linkLabels = { repo: '저장소', docs: '문서', live: '서비스' } as const
+const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
+  .filter(key => data.links[key])
+  .map(key => ({ label: linkLabels[key], href: data.links[key]! }))
+---
+
+<Layout
+  title={data.name}
+  description={data.summary}
+  ogImage={`/og/projects/${project.id}.png`}>
+  <article>
+    <header class="border-border border-b pb-6">
+      <h1 class="text-2xl font-bold">{data.name}</h1>
+      <p class="text-muted mt-2">{data.summary}</p>
+      <dl class="mt-6 grid grid-cols-[5rem_1fr] gap-x-4 gap-y-2 text-sm">
+        <dt class="text-muted">기간</dt>
+        <dd class="font-mono">{formatPeriod(data.period)}</dd>
+        <dt class="text-muted">형태</dt>
+        <dd>{formatKind(data)}</dd>
+        <dt class="text-muted">역할</dt>
+        <dd>
+          <ul>
+            {data.role.map(item => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </dd>
+        <dt class="text-muted">기술</dt>
+        <dd>
+          <ul class="flex flex-wrap gap-1.5">
+            {data.stack.map(item => (
+              <li class="bg-surface rounded px-2 py-0.5 font-mono text-xs">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </dd>
+        {basedOn && (
+          <>
+            <dt class="text-muted">원본</dt>
+            <dd>
+              <a
+                href={`/projects/${basedOn.id}/`}
+                class="text-accent underline underline-offset-4">
+                {basedOn.data.name}
+              </a>
+            </dd>
+          </>
+        )}
+        {links.length > 0 && (
+          <>
+            <dt class="text-muted">링크</dt>
+            <dd class="flex flex-wrap gap-x-4">
+              {links.map(link => (
+                <a
+                  href={link.href}
+                  class="text-accent underline underline-offset-4">
+                  {link.label}
+                </a>
+              ))}
+            </dd>
+          </>
+        )}
+      </dl>
+    </header>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold">개요</h2>
+      <div class="prose mt-4">
+        <Content />
+      </div>
+    </section>
+
+    {data.kind === 'team' && (
+      <section class="mt-12">
+        <h2 class="text-xl font-bold">협업 경계</h2>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2">
+          <div class="border-accent rounded-lg border p-4">
+            <h3 class="font-semibold">내가 한 일</h3>
+            <ul class="mt-2 list-disc pl-5">
+              {data.boundary.mine.map(item => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="border-border rounded-lg border p-4">
+            <h3 class="text-muted font-semibold">팀이 한 일</h3>
+            <ul class="text-muted mt-2 list-disc pl-5">
+              {data.boundary.team.map(item => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    )}
+
+    {cases.length > 0 && (
+      <section class="mt-12">
+        <h2 class="text-xl font-bold">사례</h2>
+        <PostList posts={cases} />
+      </section>
+    )}
+  </article>
+</Layout>

@@ -1,11 +1,16 @@
 import { defineConfig } from 'astro/config'
+import { satteri } from '@astrojs/markdown-satteri'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import astroExpressiveCode from 'astro-expressive-code'
+import { mermaidBlocks } from './src/utils/mermaid'
 
 export default defineConfig({
   site: 'https://blog.samu9nai.workers.dev',
   trailingSlash: 'always',
+  markdown: {
+    processor: satteri({ mdastPlugins: [mermaidBlocks] })
+  },
   integrations: [
     // 예전 블로그 설정을 그대로 옮겼다. 라이트 모드에서도 코드 블록은 어두운 테마 하나를 쓴다.
     astroExpressiveCode({
