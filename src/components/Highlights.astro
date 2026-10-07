@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  highlights: CollectionEntry<'resume'>['data']['highlights']
+}
+
+const { highlights } = Astro.props
+---
+
+<ul class="mt-4 list-disc space-y-1.5 pl-5 leading-relaxed">
+  {highlights.map(highlight => (
+    <li>
+      {highlight.text}
+      {highlight.link ? (
+        <a
+          href={highlight.link}
+          class="text-muted hover:text-accent ml-2 font-mono text-xs whitespace-nowrap underline underline-offset-4 transition-colors">
+          {highlight.source ?? '근거'}
+        </a>
+      ) : (
+        highlight.source && (
+          <span class="text-muted ml-2 font-mono text-xs whitespace-nowrap">
+            {highlight.source}
+          </span>
+        )
+      )}
+    </li>
+  ))}
+</ul>
