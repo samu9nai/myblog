@@ -2,6 +2,7 @@
 import { getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import PostList from '@/components/PostList.astro'
+import { ogImagePath } from '@/utils/og'
 import { getCases } from '@/utils/posts'
 import { formatKind, formatPeriod, getProjects } from '@/utils/projects'
 import { splitRefs } from '@/utils/refs'
@@ -32,7 +33,10 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
 <Layout
   title={data.name}
   description={data.summary}
-  ogImage={`/og/projects/${project.id}.png`}>
+  ogImage={ogImagePath(`/og/projects/${project.id}.png`, {
+    title: data.name,
+    description: data.summary
+  })}>
   <article>
     <header class="border-border border-b pb-6">
       <h1 class="text-xl font-bold">{data.name}</h1>
