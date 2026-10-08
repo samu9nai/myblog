@@ -35,7 +35,7 @@ export default defineConfig({
         codeLineHeight: '1.65',
         focusBorder: 'var(--accent)',
         uiFontFamily:
-          '"Spoqa Han Sans Neo", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif',
+          '"Hakgyoansim Dunggeunmiso", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif',
         uiFontSize: '0.75rem',
         frames: {
           editorActiveTabIndicatorTopColor: 'var(--accent)',
@@ -47,6 +47,9 @@ export default defineConfig({
     sitemap()
   ],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    // mermaid는 글 페이지에서 동적으로 불러온다. 개발 서버가 뒤늦게 발견해 의존성을 다시 묶으면
+    // 이미 열린 페이지의 import가 504(Outdated Optimize Dep)로 깨지므로 처음부터 묶어 둔다.
+    optimizeDeps: { include: ['mermaid'] }
   }
 })

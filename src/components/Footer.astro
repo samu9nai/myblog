@@ -1,6 +1,9 @@
 ---
 import { site } from '@/site'
 import { buildCommit } from '@/utils/build'
+import { getResume } from '@/utils/resume'
+
+const { profile } = await getResume()
 ---
 
 <footer class="border-border text-muted flex items-end justify-between border-t py-6 text-sm print:hidden">
@@ -16,9 +19,16 @@ import { buildCommit } from '@/utils/build'
       </a>
     )}
   </div>
-  <a
-    href={site.github}
-    class="hover:text-fg transition-colors">
-    GitHub
-  </a>
+  <div class="flex gap-4">
+    <a
+      href={`mailto:${profile.email}`}
+      class="hover:text-fg transition-colors">
+      메일
+    </a>
+    <a
+      href={site.github}
+      class="hover:text-fg transition-colors">
+      GitHub
+    </a>
+  </div>
 </footer>

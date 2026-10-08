@@ -196,9 +196,6 @@ importers:
       sharp:
         specifier: ^0.35.5
         version: 0.35.5(@types/node@24.19.1)
-      spoqa-han-sans:
-        specifier: ^3.3.0
-        version: 3.3.0
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -3078,9 +3075,6 @@ packages:
 
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
-
-  spoqa-han-sans@3.3.0:
-    resolution: {integrity: sha512-uEetiueUQdfc8MW+JN0Dj9aN3oONctICzBljqbd+a7XXeQV0+Cg3bKFJVtSyIgjQkpG8F7csAVX86ZUEzTt+Iw==}
 
   string-argv@0.3.2:
     resolution: {integrity: sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==}
@@ -6162,8 +6156,6 @@ snapshots:
   source-map-js@1.2.2: {}
 
   space-separated-tokens@2.0.2: {}
-
-  spoqa-han-sans@3.3.0: {}
 
   string-argv@0.3.2: {}
 

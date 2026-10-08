@@ -121,6 +121,8 @@ const resume = defineCollection({
       .array(
         z.object({
           text: z.string(),
+          // 홈에서 한 줄로 보여 줄 짧은 문장이다. 없으면 text를 쓴다.
+          short: z.string().optional(),
           source: z.string().optional(),
           link: z.url().optional()
         })

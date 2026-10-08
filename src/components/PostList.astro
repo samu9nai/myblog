@@ -4,30 +4,36 @@ import { formatDate } from '@/utils/posts'
 
 interface Props {
   posts: CollectionEntry<'posts'>[]
+  // 목록이 h2 섹션 안에 들어가면 h3로 낮춘다.
+  heading?: 'h2' | 'h3'
 }
 
-const { posts } = Astro.props
+const { posts, heading: Heading = 'h2' } = Astro.props
 ---
 
-<ul class="mt-8 flex flex-col gap-8">
+<ul class="border-border mt-6 border-t">
   {posts.map(post => (
-    <li>
+    <li class="border-border border-b">
       <a
         href={`/posts/${post.id}/`}
-        class="group block">
-        <h2 class="group-hover:text-accent text-lg font-semibold transition-colors">
-          {post.data.title}
-          {post.data.draft && (
-            <span class="text-muted ml-2 font-mono text-xs">draft</span>
-          )}
-        </h2>
-        <p class="text-muted mt-1">{post.data.description}</p>
+        class="group flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+        <span class="min-w-0">
+          <Heading class="group-hover:text-accent font-medium transition-colors">
+            {post.data.title}
+            {post.data.draft && (
+              <span class="text-muted ml-2 font-mono text-xs font-normal">
+                draft
+              </span>
+            )}
+          </Heading>
+          <p class="text-muted mt-1 text-sm">{post.data.description}</p>
+        </span>
+        <time
+          datetime={post.data.pubDate.toISOString()}
+          class="text-muted shrink-0 font-mono text-xs">
+          {formatDate(post.data.pubDate)}
+        </time>
       </a>
-      <time
-        datetime={post.data.pubDate.toISOString()}
-        class="text-muted mt-2 block font-mono text-sm">
-        {formatDate(post.data.pubDate)}
-      </time>
     </li>
   ))}
 </ul>

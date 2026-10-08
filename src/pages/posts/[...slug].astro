@@ -1,7 +1,7 @@
 ---
 import { getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
-import { formatDate, getPosts } from '@/utils/posts'
+import { formatDate, getCases, getPosts } from '@/utils/posts'
 
 export async function getStaticPaths() {
   const posts = await getPosts()
@@ -12,6 +12,12 @@ const { post } = Astro.props
 const { title, description, pubDate, updatedDate, tags } = post.data
 const { Content } = await render(post)
 const project = post.data.project && (await getEntry(post.data.project))
+
+// 같은 프로젝트의 사례 글을 caseOrder 순서로 이어 읽게 한다.
+const cases = project ? await getCases(project.id) : []
+const index = cases.findIndex(item => item.id === post.id)
+const prev = index > 0 ? cases[index - 1] : undefined
+const next = index >= 0 ? cases[index + 1] : undefined
 ---
 
 <Layout
@@ -28,7 +34,7 @@ const project = post.data.project && (await getEntry(post.data.project))
           ← {project.data.name} 사례 {post.data.caseOrder}
         </a>
       )}
-      <h1 class="text-2xl font-bold">{title}</h1>
+      <h1 class="text-xl font-bold">{title}</h1>
       <p class="text-muted mt-3 font-mono text-sm">
         <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
         {updatedDate && (
@@ -59,12 +65,97 @@ const project = post.data.project && (await getEntry(post.data.project))
     <div class="prose mt-8">
       <Content />
     </div>
+    {(prev || next) && (
+      <nav
+        aria-label="같은 프로젝트의 다른 사례"
+        class="border-border mt-16 grid gap-4 border-t pt-6 text-sm sm:grid-cols-2">
+        {prev ? (
+          <a
+            href={`/posts/${prev.id}/`}
+            class="group">
+            <span class="text-muted block text-xs">
+              <span
+                aria-hidden="true"
+                class="nudge-w">
+                ←
+              </span>{' '}
+              이전 사례 {prev.data.caseOrder}
+            </span>
+            <span class="group-hover:text-accent mt-1 block transition-colors">
+              {prev.data.title}
+            </span>
+          </a>
+        ) : (
+          <span />
+        )}
+        {next && (
+          <a
+            href={`/posts/${next.id}/`}
+            class="group sm:text-right">
+            <span class="text-muted block text-xs">
+              다음 사례 {next.data.caseOrder}{' '}
+              <span
+                aria-hidden="true"
+                class="nudge-e">
+                →
+              </span>
+            </span>
+            <span class="group-hover:text-accent mt-1 block transition-colors">
+              {next.data.title}
+            </span>
+          </a>
+        )}
+      </nav>
+    )}
   </article>
 </Layout>
 
 <script>
   // mermaid 그림이 있는 글에서만 mermaid를 내려받는다. 테마가 바뀌면 다시 그린다.
   const diagrams = [...document.querySelectorAll<HTMLElement>('pre.mermaid')]
+  diagrams.forEach(diagram => diagram.classList.add('is-pending'))
+
+  // 본문 폭을 넘는 그림은 오른쪽 끝을 흐려서 가로로 더 있다는 것을 보여 준다. 끝까지 밀면 걷는다.
+  const markScrollable = () => {
+    diagrams.forEach(diagram => {
+      const update = () =>
+        diagram.classList.toggle(
+          'is-clipped',
+          diagram.scrollLeft + diagram.clientWidth < diagram.scrollWidth - 1
+        )
+      update()
+      diagram.onscroll = update
+    })
+  }
+
+  const themeVariables = () => {
+    const token = (name: string) =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+    return {
+      darkMode: document.documentElement.dataset.theme === 'dark',
+      background: token('--bg'),
+      primaryColor: token('--surface'),
+      primaryTextColor: token('--fg'),
+      primaryBorderColor: token('--accent'),
+      secondaryColor: token('--bg'),
+      tertiaryColor: token('--bg'),
+      lineColor: token('--muted'),
+      textColor: token('--fg'),
+      mainBkg: token('--surface'),
+      nodeBorder: token('--accent'),
+      clusterBkg: token('--bg'),
+      edgeLabelBackground: token('--bg'),
+      actorBkg: token('--surface'),
+      actorBorder: token('--accent'),
+      actorTextColor: token('--fg'),
+      signalColor: token('--muted'),
+      signalTextColor: token('--fg'),
+      noteBkgColor: token('--surface'),
+      noteBorderColor: token('--gold'),
+      noteTextColor: token('--fg'),
+      fontFamily: getComputedStyle(document.body).fontFamily
+    }
+  }
 
   const draw = async () => {
     const { default: mermaid } = await import('mermaid')
@@ -76,14 +167,21 @@ const project = post.data.project && (await getEntry(post.data.project))
         // 가로로 긴 그림을 본문 폭에 맞춰 줄이면 글자를 읽을 수 없어 가로 스크롤로 보여 준다.
         flowchart: { useMaxWidth: false },
         sequence: { useMaxWidth: false },
-        theme:
-          document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default'
+        // 사이트 색 토큰으로 칠한다. 기본 테마의 연보라가 라이트(보라 없음) 팔레트와 어긋난다.
+        theme: 'base',
+        themeVariables: themeVariables()
       })
       diagrams.forEach((diagram, index) => {
+        diagram.classList.add('is-pending')
         diagram.removeAttribute('data-processed')
         diagram.textContent = sources[index]
       })
-      return mermaid.run({ nodes: diagrams })
+      return mermaid
+        .run({ nodes: diagrams })
+        .then(markScrollable)
+        .finally(() =>
+          diagrams.forEach(diagram => diagram.classList.remove('is-pending'))
+        )
     }
 
     await render()
@@ -99,7 +197,10 @@ const project = post.data.project && (await getEntry(post.data.project))
       entries => {
         if (!entries.some(entry => entry.isIntersecting)) return
         observer.disconnect()
-        void draw()
+        // mermaid를 불러오거나 그리지 못하면 숨겨 둔 원문을 다시 보여 준다.
+        draw().catch(() =>
+          diagrams.forEach(diagram => diagram.classList.remove('is-pending'))
+        )
       },
       { rootMargin: '400px' }
     )
