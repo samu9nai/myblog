@@ -3,11 +3,11 @@ import satori from 'satori'
 import sharp from 'sharp'
 import { site } from '@/site'
 
-// satori는 woff2를 읽지 못해 ttf와 woff를 쓴다. 빌드는 저장소 루트에서 돈다.
+// satori는 woff2를 읽지 못해 woff를 쓴다. 빌드는 저장소 루트에서 돈다.
 const fontFiles = {
   regular:
-    'node_modules/spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.ttf',
-  bold: 'node_modules/spoqa-han-sans/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.ttf',
+    'src/assets/fonts/hakgyoansim-dunggeunmiso/HakgyoansimDunggeunmiso-R.woff',
+  bold: 'src/assets/fonts/hakgyoansim-dunggeunmiso/HakgyoansimDunggeunmiso-B.woff',
   mono: 'node_modules/@fontsource/maple-mono/files/maple-mono-latin-600-normal.woff'
 }
 
@@ -19,13 +19,13 @@ const loadFonts = () =>
     )
   ))
 
-// global.css의 라이트 테마 색과 같다.
+// global.css의 다크 테마(기본) 색과 같다. 위쪽 띠는 두 테마에 공통인 금빛이다.
 const color = {
-  bg: '#fafaf9',
-  fg: '#1c1917',
-  muted: '#57534e',
-  border: '#e7e5e4',
-  accent: '#1d4ed8'
+  bg: '#0c0a10',
+  fg: '#efeaf4',
+  muted: '#a79eb4',
+  border: '#28222f',
+  accent: '#f1cb67'
 }
 
 interface OgImage {
@@ -50,7 +50,7 @@ export async function renderOgImage({ title, description }: OgImage) {
           padding: '72px 80px',
           background: color.bg,
           color: color.fg,
-          fontFamily: 'Spoqa Han Sans Neo',
+          fontFamily: 'Hakgyoansim Dunggeunmiso',
           borderTop: `12px solid ${color.accent}`
         },
         children: [
@@ -124,8 +124,8 @@ export async function renderOgImage({ title, description }: OgImage) {
       width: 1200,
       height: 630,
       fonts: [
-        { name: 'Spoqa Han Sans Neo', data: regular, weight: 400 },
-        { name: 'Spoqa Han Sans Neo', data: bold, weight: 700 },
+        { name: 'Hakgyoansim Dunggeunmiso', data: regular, weight: 400 },
+        { name: 'Hakgyoansim Dunggeunmiso', data: bold, weight: 700 },
         { name: 'Maple Mono', data: mono, weight: 600 }
       ]
     }

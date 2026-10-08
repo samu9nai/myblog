@@ -3,6 +3,8 @@ import '@/styles/global.css'
 import Header from '@/components/Header.astro'
 import Footer from '@/components/Footer.astro'
 import { site } from '@/site'
+import regularBasic from '@/assets/fonts/hakgyoansim-dunggeunmiso/HakgyoansimDunggeunmiso-R-basic.woff2?url'
+import regularKs from '@/assets/fonts/hakgyoansim-dunggeunmiso/HakgyoansimDunggeunmiso-R-ks.woff2?url'
 
 interface Props {
   title?: string
@@ -75,6 +77,16 @@ const ogImageUrl = new URL(ogImage, Astro.site)
       name="twitter:card"
       content="summary_large_image"
     />
+    {/* 본문 글꼴은 CSS를 다 읽은 뒤에야 요청되므로, 거의 모든 페이지에 쓰이는 Regular 두 조각을 미리 받는다. */}
+    {[regularBasic, regularKs].map(href => (
+      <link
+        rel="preload"
+        href={href}
+        as="font"
+        type="font/woff2"
+        crossorigin
+      />
+    ))}
     <link
       rel="icon"
       type="image/svg+xml"
@@ -91,17 +103,14 @@ const ogImageUrl = new URL(ogImage, Astro.site)
       href="/sitemap-index.xml"
     />
     <script is:inline>
-      // 첫 페인트 전에 테마를 정해 깜빡임을 막는다. 저장된 선택이 없으면 시스템 설정을 따른다.
+      // 첫 페인트 전에 테마를 정해 깜빡임을 막는다. 저장된 선택이 없으면 다크(큐어 아르카나 섀도)로 시작한다.
       ;(() => {
         let stored = null
         try {
           stored = localStorage.getItem('theme')
         } catch {}
-        const system = matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light'
         document.documentElement.dataset.theme =
-          stored === 'dark' || stored === 'light' ? stored : system
+          stored === 'light' ? 'light' : 'dark'
       })()
     </script>
   </head>

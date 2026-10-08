@@ -31,7 +31,6 @@
     "mermaid": "^12.1.0",
     "satori": "^0.33.5",
     "sharp": "^0.35.5",
-    "spoqa-han-sans": "^3.3.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

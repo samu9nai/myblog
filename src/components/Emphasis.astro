@@ -1,0 +1,14 @@
+---
+import { splitEmphasis } from '@/utils/text'
+
+interface Props {
+  text: string
+}
+
+// 문단은 회색으로 두고, 강조한 단어만 본문색과 금빛 밑줄로 밝힌다.
+const parts = splitEmphasis(Astro.props.text)
+---
+
+{parts.map(({ part, strong }) =>
+  strong ? <strong class="emphasis">{part}</strong> : part
+)}

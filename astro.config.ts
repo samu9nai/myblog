@@ -35,7 +35,7 @@ export default defineConfig({
         codeLineHeight: '1.65',
         focusBorder: 'var(--accent)',
         uiFontFamily:
-          '"Spoqa Han Sans Neo", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif',
+          '"Hakgyoansim Dunggeunmiso", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif',
         uiFontSize: '0.75rem',
         frames: {
           editorActiveTabIndicatorTopColor: 'var(--accent)',
