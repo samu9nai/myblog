@@ -169,6 +169,15 @@
 @layer base {
   html {
     @apply bg-bg text-fg font-sans antialiased;
+    /* 누를 때 피드백은 .press가 맡으므로 모바일 브라우저의 회색 상자는 끈다. */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 선택 영역은 상호작용 색(라이트 분홍, 다크 연보라)을 옅게 깐다. 회색 글자·링크는 이 바탕에서
+     라이트 대비가 4.5에 못 미쳐서, 선택한 동안은 모두 본문색으로 바꾼다(라이트 11.6, 다크 10.3). */
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 25%, transparent);
+    color: var(--fg);
   }
 
   body {
