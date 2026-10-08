@@ -2,6 +2,8 @@ import { readFile } from 'node:fs/promises'
 import satori from 'satori'
 import sharp from 'sharp'
 import { site } from '@/site'
+import { ogVersion } from '@/utils/og-version'
+import template from './og.ts?raw'
 
 // satori는 woff2를 읽지 못해 woff를 쓴다. 빌드는 저장소 루트에서 돈다.
 const fontFiles = {
@@ -32,6 +34,13 @@ interface OgImage {
   title: string
   description?: string
 }
+
+/** 글이 아닌 페이지가 함께 쓰는 기본 OG 이미지의 내용이다. */
+export const defaultOgImage: OgImage = { title: site.description }
+
+/** 이 파일(그리는 방법)이나 제목·설명이 바뀔 때만 바뀌는 이미지 주소를 만든다. */
+export const ogImagePath = (path: string, { title, description }: OgImage) =>
+  `${path}?v=${ogVersion(template, title, description)}`
 
 /** 1200×630 PNG를 만든다. */
 export async function renderOgImage({ title, description }: OgImage) {

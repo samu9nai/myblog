@@ -1,6 +1,7 @@
 ---
 import { getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
+import { ogImagePath } from '@/utils/og'
 import { formatDate, getCases, getPosts } from '@/utils/posts'
 
 export async function getStaticPaths() {
@@ -23,7 +24,7 @@ const next = index >= 0 ? cases[index + 1] : undefined
 <Layout
   title={title}
   description={description}
-  ogImage={`/og/${post.id}.png`}
+  ogImage={ogImagePath(`/og/${post.id}.png`, { title, description })}
   ogType="article">
   <article>
     <header class="border-border border-b pb-6">

@@ -41,8 +41,12 @@
   }
 
   label()
-  const apply = (next: string) => {
+  const themeColor = document.querySelector<HTMLMetaElement>(
+    'meta[name="theme-color"]'
+  )
+  const apply = (next: 'dark' | 'light') => {
     root.dataset.theme = next
+    if (themeColor) themeColor.content = themeColor.dataset[next] ?? ''
     try {
       localStorage.setItem('theme', next)
     } catch {

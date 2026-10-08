@@ -3,6 +3,7 @@ import '@/styles/global.css'
 import Header from '@/components/Header.astro'
 import Footer from '@/components/Footer.astro'
 import { site } from '@/site'
+import { defaultOgImage, ogImagePath } from '@/utils/og'
 import regularBasic from '@/assets/fonts/hakgyoansim-dunggeunmiso/HakgyoansimDunggeunmiso-R-basic.woff2?url'
 import regularKs from '@/assets/fonts/hakgyoansim-dunggeunmiso/HakgyoansimDunggeunmiso-R-ks.woff2?url'
 
@@ -16,7 +17,7 @@ interface Props {
 const {
   title,
   description = site.description,
-  ogImage = '/og.png',
+  ogImage = ogImagePath('/og.png', defaultOgImage),
   ogType = 'website'
 } = Astro.props
 const pageTitle = title ? `${title} · ${site.name}` : site.name
@@ -31,6 +32,13 @@ const ogImageUrl = new URL(ogImage, Astro.site)
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1"
+    />
+    {/* 모바일 브라우저 주소창 색. global.css의 --bg와 같고, 테마를 바꿀 때 스크립트가 값을 고른다. */}
+    <meta
+      name="theme-color"
+      content="#0c0a10"
+      data-dark="#0c0a10"
+      data-light="#ffffff"
     />
     <title>{pageTitle}</title>
     <meta
@@ -109,8 +117,10 @@ const ogImageUrl = new URL(ogImage, Astro.site)
         try {
           stored = localStorage.getItem('theme')
         } catch {}
-        document.documentElement.dataset.theme =
-          stored === 'light' ? 'light' : 'dark'
+        const theme = stored === 'light' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = theme
+        const meta = document.querySelector('meta[name="theme-color"]')
+        meta.content = meta.dataset[theme]
       })()
     </script>
   </head>
