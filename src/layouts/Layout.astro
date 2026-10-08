@@ -33,6 +33,13 @@ const ogImageUrl = new URL(ogImage, Astro.site)
       name="viewport"
       content="width=device-width, initial-scale=1"
     />
+    {/* 모바일 브라우저 주소창 색. global.css의 --bg와 같고, 테마를 바꿀 때 스크립트가 값을 고른다. */}
+    <meta
+      name="theme-color"
+      content="#0c0a10"
+      data-dark="#0c0a10"
+      data-light="#ffffff"
+    />
     <title>{pageTitle}</title>
     <meta
       name="description"
@@ -110,8 +117,10 @@ const ogImageUrl = new URL(ogImage, Astro.site)
         try {
           stored = localStorage.getItem('theme')
         } catch {}
-        document.documentElement.dataset.theme =
-          stored === 'light' ? 'light' : 'dark'
+        const theme = stored === 'light' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = theme
+        const meta = document.querySelector('meta[name="theme-color"]')
+        meta.content = meta.dataset[theme]
       })()
     </script>
   </head>
