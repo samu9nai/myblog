@@ -23,11 +23,13 @@ export async function getCases(projectId: string) {
     .sort((a, b) => (a.data.caseOrder ?? 0) - (b.data.caseOrder ?? 0))
 }
 
-const dateFormat = new Intl.DateTimeFormat('ko-KR', {
+const dateFormat = new Intl.DateTimeFormat('en-CA', {
   year: 'numeric',
-  month: 'long',
-  day: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
   timeZone: 'Asia/Seoul'
 })
 
-export const formatDate = (date: Date) => dateFormat.format(date)
+/** 2026-08-24 → '2026.08.24' (Asia/Seoul) */
+export const formatDate = (date: Date) =>
+  dateFormat.format(date).replaceAll('-', '.')

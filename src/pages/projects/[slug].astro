@@ -4,6 +4,7 @@ import Layout from '@/layouts/Layout.astro'
 import PostList from '@/components/PostList.astro'
 import { getCases } from '@/utils/posts'
 import { formatKind, formatPeriod, getProjects } from '@/utils/projects'
+import { splitRefs } from '@/utils/refs'
 
 export async function getStaticPaths() {
   const projects = await getProjects()
@@ -19,6 +20,9 @@ const { Content } = await render(project)
 const cases = await getCases(project.id)
 const basedOn = data.basedOn && (await getEntry(data.basedOn))
 
+// 칩은 앞쪽 대표 기술만 보이고, 나머지는 한 줄 텍스트로 붙인다.
+const chipLimit = 8
+
 const linkLabels = { repo: '저장소', docs: '문서', live: '서비스' } as const
 const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
   .filter(key => data.links[key])
@@ -31,30 +35,25 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
   ogImage={`/og/projects/${project.id}.png`}>
   <article>
     <header class="border-border border-b pb-6">
-      <h1 class="text-2xl font-bold">{data.name}</h1>
+      <h1 class="text-xl font-bold">{data.name}</h1>
       <p class="text-muted mt-2">{data.summary}</p>
-      <dl class="mt-6 grid grid-cols-[5rem_1fr] gap-x-4 gap-y-2 text-sm">
+      <dl class="mt-6 grid grid-cols-[3.5rem_1fr] gap-x-4 gap-y-2 text-sm sm:grid-cols-[5rem_1fr]">
         <dt class="text-muted">기간</dt>
         <dd class="font-mono">{formatPeriod(data.period)}</dd>
         <dt class="text-muted">형태</dt>
         <dd>{formatKind(data)}</dd>
-        <dt class="text-muted">역할</dt>
-        <dd>
-          <ul>
-            {data.role.map(item => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        </dd>
         <dt class="text-muted">기술</dt>
         <dd>
           <ul class="flex flex-wrap gap-1.5">
-            {data.stack.map(item => (
-              <li class="bg-surface rounded px-2 py-0.5 font-mono text-xs">
-                {item}
-              </li>
+            {data.stack.slice(0, chipLimit).map(item => (
+              <li class="chip">{item}</li>
             ))}
           </ul>
+          {data.stack.length > chipLimit && (
+            <p class="text-muted mt-2 font-mono text-xs">
+              {data.stack.slice(chipLimit).join(', ')}
+            </p>
+          )}
         </dd>
         {basedOn && (
           <>
@@ -86,7 +85,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
     </header>
 
     <section class="mt-10">
-      <h2 class="text-xl font-bold">개요</h2>
+      <h2 class="section-label">overview</h2>
       <div class="prose mt-4">
         <Content />
       </div>
@@ -94,32 +93,50 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
 
     {data.kind === 'team' && (
       <section class="mt-12">
-        <h2 class="text-xl font-bold">협업 경계</h2>
-        <div class="mt-4 grid gap-4 sm:grid-cols-2">
-          <div class="border-accent rounded-lg border p-4">
-            <h3 class="font-semibold">내가 한 일</h3>
-            <ul class="mt-2 list-disc pl-5">
-              {data.boundary.mine.map(item => (
-                <li>{item}</li>
+        <h2 class="section-label">boundary</h2>
+        <div class="bg-surface mt-4 rounded-2xl p-5">
+          <h3 class="font-bold">내가 한 일</h3>
+          <ul class="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed">
+            {data.boundary.mine
+              .map(item => splitRefs(item, data.links.repo))
+              .map(({ text, refs }) => (
+                <li>
+                  {text}
+                  {refs.map(ref =>
+                    ref.url ? (
+                      <a
+                        href={ref.url}
+                        class="text-muted hover:text-accent ml-1.5 font-mono text-xs whitespace-nowrap underline-offset-4 transition-colors hover:underline">
+                        {ref.label}
+                      </a>
+                    ) : (
+                      <span class="text-muted ml-1.5 font-mono text-xs whitespace-nowrap">
+                        {ref.label}
+                      </span>
+                    )
+                  )}
+                </li>
               ))}
-            </ul>
-          </div>
-          <div class="border-border rounded-lg border p-4">
-            <h3 class="text-muted font-semibold">팀이 한 일</h3>
-            <ul class="text-muted mt-2 list-disc pl-5">
-              {data.boundary.team.map(item => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </div>
+          </ul>
+        </div>
+        <div class="mt-6 px-5">
+          <h3 class="text-muted font-bold">팀이 한 일</h3>
+          <ul class="text-muted mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed">
+            {data.boundary.team.map(item => (
+              <li>{item}</li>
+            ))}
+          </ul>
         </div>
       </section>
     )}
 
     {cases.length > 0 && (
       <section class="mt-12">
-        <h2 class="text-xl font-bold">사례</h2>
-        <PostList posts={cases} />
+        <h2 class="section-label">cases</h2>
+        <PostList
+          posts={cases}
+          heading="h3"
+        />
       </section>
     )}
   </article>
