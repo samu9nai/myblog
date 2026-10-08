@@ -197,7 +197,10 @@ const next = index >= 0 ? cases[index + 1] : undefined
       entries => {
         if (!entries.some(entry => entry.isIntersecting)) return
         observer.disconnect()
-        void draw()
+        // mermaid를 불러오거나 그리지 못하면 숨겨 둔 원문을 다시 보여 준다.
+        draw().catch(() =>
+          diagrams.forEach(diagram => diagram.classList.remove('is-pending'))
+        )
       },
       { rootMargin: '400px' }
     )
