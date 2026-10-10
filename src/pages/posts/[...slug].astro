@@ -31,7 +31,7 @@ const next = index >= 0 ? cases[index + 1] : undefined
       {project && (
         <a
           href={`/projects/${project.id}/`}
-          class="text-muted hover:text-accent mb-3 inline-block text-sm transition-colors">
+          class="text-muted hover:text-accent mb-3 inline-block text-sm press-fade">
           ← {project.data.name} 사례 {post.data.caseOrder}
         </a>
       )}
@@ -55,7 +55,7 @@ const next = index >= 0 ? cases[index + 1] : undefined
             <li>
               <a
                 href={`/posts/tags/${tag}/`}
-                class="hover:text-accent transition-colors">
+                class="hover:text-accent press-fade">
                 #{tag}
               </a>
             </li>
@@ -73,7 +73,7 @@ const next = index >= 0 ? cases[index + 1] : undefined
         {prev ? (
           <a
             href={`/posts/${prev.id}/`}
-            class="group">
+            class="press-fade group">
             <span class="text-muted block text-xs">
               <span
                 aria-hidden="true"
@@ -92,7 +92,7 @@ const next = index >= 0 ? cases[index + 1] : undefined
         {next && (
           <a
             href={`/posts/${next.id}/`}
-            class="group sm:text-right">
+            class="press-fade group sm:text-right">
             <span class="text-muted block text-xs">
               다음 사례 {next.data.caseOrder}{' '}
               <span

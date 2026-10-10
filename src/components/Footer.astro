@@ -14,7 +14,7 @@ const { profile } = await getResume()
     {buildCommit && (
       <a
         href={`${site.repo}/commit/${buildCommit.sha}`}
-        class="hover:text-fg font-mono text-xs transition-colors">
+        class="hover:text-fg font-mono text-xs press-fade">
         build {buildCommit.short} · {buildCommit.date}
       </a>
     )}
@@ -22,12 +22,12 @@ const { profile } = await getResume()
   <div class="flex gap-4">
     <a
       href={`mailto:${profile.email}`}
-      class="hover:text-fg transition-colors">
+      class="hover:text-fg press-fade">
       메일
     </a>
     <a
       href={site.github}
-      class="hover:text-fg transition-colors">
+      class="hover:text-fg press-fade">
       GitHub
     </a>
   </div>

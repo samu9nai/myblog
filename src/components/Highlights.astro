@@ -15,7 +15,7 @@ const { highlights } = Astro.props
       {highlight.link ? (
         <a
           href={highlight.link}
-          class="text-muted hover:text-accent ml-2 font-mono text-xs whitespace-nowrap underline underline-offset-4 transition-colors">
+          class="text-muted hover:text-accent ml-2 font-mono text-xs whitespace-nowrap underline underline-offset-4 press-fade">
           {highlight.source ?? '근거'}
         </a>
       ) : (

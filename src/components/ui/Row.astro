@@ -1,0 +1,32 @@
+---
+interface Props {
+  // 주면 행 전체가 링크가 된다.
+  href?: string
+  layout?: keyof typeof layouts
+  class?: string
+}
+
+// split: 모바일에서는 위아래로 쌓고 넓은 화면에서 왼쪽 제목·오른쪽 메타. inline: 늘 한 줄. block: 직접 배치.
+const layouts = {
+  split:
+    'flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4',
+  inline: 'flex items-baseline justify-between gap-4',
+  block: 'block'
+}
+
+const { href, layout = 'split', class: className } = Astro.props
+const Tag = href ? 'a' : 'div'
+---
+
+<li class="border-border border-b">
+  <Tag
+    href={href}
+    class:list={[
+      href && 'group row-hover press-fade',
+      layouts[layout],
+      className
+    ]}>
+    <slot />
+    <slot name="meta" />
+  </Tag>
+</li>

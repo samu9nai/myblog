@@ -2,6 +2,11 @@
 import Layout from '@/layouts/Layout.astro'
 import Emphasis from '@/components/Emphasis.astro'
 import Monogram from '@/components/Monogram.astro'
+import Button from '@/components/ui/Button.astro'
+import Card from '@/components/ui/Card.astro'
+import Row from '@/components/ui/Row.astro'
+import SectionHeader from '@/components/ui/SectionHeader.astro'
+import StackChips from '@/components/ui/StackChips.astro'
 import { formatDate, getCases, getPosts } from '@/utils/posts'
 import { formatKind, formatPeriod, getProjects } from '@/utils/projects'
 import { getResume } from '@/utils/resume'
@@ -35,14 +40,10 @@ const month = (value: string) => value.replace('-', '.')
       <Emphasis text={profile.summary} />
     </p>
     <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-      <a
-        href="/resume/"
-        class="bg-fg text-bg press rounded-lg px-3.5 py-1.5 text-sm font-medium hover:opacity-85">
-        이력서
-      </a>
+      <Button href="/resume/">이력서</Button>
       <a
         href={`mailto:${profile.email}`}
-        class="hover:text-accent text-sm transition-colors">
+        class="hover:text-accent text-sm press-fade">
         메일 보내기
       </a>
     </div>
@@ -50,62 +51,59 @@ const month = (value: string) => value.replace('-', '.')
 
   {highlights.length > 0 && (
     <section class="mt-16">
-      <h2 class="section-label">highlights</h2>
+      <SectionHeader label="highlights" />
       <ul class="mt-3">
-        {highlights.map(highlight => (
-          <li class="border-border border-b">
-            {highlight.link ? (
-              <a
-                href={highlight.link}
-                class="group flex flex-col gap-1 py-3 text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                <span class="group-hover:text-accent transition-colors">
-                  {highlight.short ?? highlight.text}
+        {highlights.map(highlight =>
+          highlight.link ? (
+            <Row
+              href={highlight.link}
+              class="py-3 text-sm">
+              <span class="group-hover:text-accent transition-colors">
+                {highlight.short ?? highlight.text}
+              </span>
+              <span
+                slot="meta"
+                class="meta group-hover:text-accent transition-colors">
+                {highlight.source ?? '근거'}
+                <span
+                  aria-hidden="true"
+                  class="nudge-ne ml-1">
+                  ↗
                 </span>
-                <span class="text-muted group-hover:text-accent shrink-0 font-mono text-xs transition-colors">
-                  {highlight.source ?? '근거'}
-                  <span
-                    aria-hidden="true"
-                    class="nudge-ne ml-1">
-                    ↗
-                  </span>
+              </span>
+            </Row>
+          ) : (
+            <Row class="py-3 text-sm">
+              <span>{highlight.short ?? highlight.text}</span>
+              {highlight.source && (
+                <span
+                  slot="meta"
+                  class="meta">
+                  {highlight.source}
                 </span>
-              </a>
-            ) : (
-              <div class="flex flex-col gap-1 py-3 text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                <span>{highlight.short ?? highlight.text}</span>
-                {highlight.source && (
-                  <span class="text-muted shrink-0 font-mono text-xs">
-                    {highlight.source}
-                  </span>
-                )}
-              </div>
-            )}
-          </li>
-        ))}
+              )}
+            </Row>
+          )
+        )}
       </ul>
     </section>
   )}
 
   {featured && (
     <section class="mt-16">
-      <div class="flex items-baseline justify-between">
-        <h2 class="section-label">projects</h2>
-        <a
-          href="/projects/"
-          class="text-muted hover:text-accent text-xs transition-colors">
-          프로젝트 전체 보기
-        </a>
-      </div>
-      <a
+      <SectionHeader
+        label="projects"
+        href="/projects/"
+        more="프로젝트 전체 보기"
+      />
+      <Card
         href={`/projects/${featured.id}/`}
-        class="group bg-surface press-soft mt-3 block rounded-2xl p-5 hover:bg-[color-mix(in_oklab,var(--color-surface),var(--color-fg)_4%)]">
+        class="mt-3">
         <div class="flex items-baseline justify-between gap-4">
           <h3 class="group-hover:text-accent font-medium transition-colors">
             {featured.data.name}
           </h3>
-          <span class="text-muted shrink-0 font-mono text-xs">
-            {formatPeriod(featured.data.period)}
-          </span>
+          <span class="meta">{formatPeriod(featured.data.period)}</span>
         </div>
         <p class="text-muted mt-1 text-sm leading-relaxed">
           {featured.data.summary}
@@ -114,33 +112,31 @@ const month = (value: string) => value.replace('-', '.')
           {formatKind(featured.data)}
           {featuredCases > 0 && ` · 사례 ${featuredCases}개`}
         </p>
-        <ul
-          aria-label="기술 스택"
-          class="mt-3 flex flex-wrap gap-1.5">
-          {featured.data.stack.slice(0, 4).map(item => (
-            <li class="chip">{item}</li>
-          ))}
-        </ul>
-      </a>
+        <StackChips
+          stack={featured.data.stack}
+          limit={4}
+          class="mt-3"
+        />
+      </Card>
       <ul class="mt-2">
         {projects.map(project => (
-          <li class="border-border border-b">
-            <a
-              href={`/projects/${project.id}/`}
-              class="group flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-              <span class="min-w-0">
-                <span class="group-hover:text-accent block font-medium transition-colors">
-                  {project.data.name}
-                </span>
-                <span class="text-muted mt-0.5 block text-sm sm:truncate">
-                  {project.data.summary}
-                </span>
+          <Row
+            href={`/projects/${project.id}/`}
+            class="py-3">
+            <span class="min-w-0">
+              <span class="group-hover:text-accent block font-medium transition-colors">
+                {project.data.name}
               </span>
-              <span class="text-muted shrink-0 font-mono text-xs">
-                {formatPeriod(project.data.period)}
+              <span class="text-muted mt-0.5 block text-sm sm:truncate">
+                {project.data.summary}
               </span>
-            </a>
-          </li>
+            </span>
+            <span
+              slot="meta"
+              class="meta">
+              {formatPeriod(project.data.period)}
+            </span>
+          </Row>
         ))}
       </ul>
     </section>
@@ -148,11 +144,11 @@ const month = (value: string) => value.replace('-', '.')
 
   {timeline.length > 0 && (
     <section class="mt-16">
-      <h2 class="section-label">timeline</h2>
+      <SectionHeader label="timeline" />
       <ol class="border-border mt-4 ml-1 border-l">
         {timeline.map(item => (
           <li class="relative pb-4 pl-5 last:pb-0">
-            <span class="star absolute top-[5px] -left-[5.5px]" />
+            <span class="star star-reveal absolute top-[5px] -left-[5.5px]" />
             <p class="flex gap-4 text-sm">
               <span class="text-muted w-14 shrink-0 font-mono text-xs leading-5">
                 {month(item.start)}
@@ -172,30 +168,27 @@ const month = (value: string) => value.replace('-', '.')
 
   {posts.length > 0 && (
     <section class="mt-16">
-      <div class="flex items-baseline justify-between">
-        <h2 class="section-label">writing</h2>
-        <a
-          href="/posts/"
-          class="text-muted hover:text-accent text-xs transition-colors">
-          글 전체 보기
-        </a>
-      </div>
+      <SectionHeader
+        label="writing"
+        href="/posts/"
+        more="글 전체 보기"
+      />
       <ul class="mt-3">
         {posts.map(post => (
-          <li class="border-border border-b">
-            <a
-              href={`/posts/${post.id}/`}
-              class="group flex items-baseline justify-between gap-4 py-3 text-sm">
-              <span class="group-hover:text-accent transition-colors">
-                {post.data.title}
-              </span>
-              <time
-                datetime={post.data.pubDate.toISOString()}
-                class="text-muted shrink-0 font-mono text-xs">
-                {formatDate(post.data.pubDate)}
-              </time>
-            </a>
-          </li>
+          <Row
+            href={`/posts/${post.id}/`}
+            layout="inline"
+            class="py-3 text-sm">
+            <span class="group-hover:text-accent transition-colors">
+              {post.data.title}
+            </span>
+            <time
+              slot="meta"
+              datetime={post.data.pubDate.toISOString()}
+              class="meta">
+              {formatDate(post.data.pubDate)}
+            </time>
+          </Row>
         ))}
       </ul>
     </section>

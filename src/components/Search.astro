@@ -1,10 +1,13 @@
-<button
-  type="button"
+---
+import Button from '@/components/ui/Button.astro'
+---
+
+<Button
+  variant="icon"
   id="search-open"
   aria-label="검색"
   aria-keyshortcuts="Meta+K Control+K"
-  title="검색 (⌘K)"
-  class="text-muted hover:text-fg hover:bg-surface press -m-2 rounded-lg p-2">
+  title="검색 (⌘K)">
   <svg
     class="size-4"
     viewBox="0 0 24 24"
@@ -19,12 +22,12 @@
       r="7"></circle>
     <path d="m20 20-3.5-3.5"></path>
   </svg>
-</button>
+</Button>
 
 <dialog
   id="search-dialog"
   aria-label="글과 프로젝트 검색"
-  class="bg-bg dark:bg-surface text-fg border-border mx-auto mt-[12vh] w-[calc(100%-2rem)] max-w-xl rounded-lg border p-0 backdrop:bg-black/60">
+  class="dialog-pop bg-bg dark:bg-surface text-fg border-border mx-auto mt-[12vh] w-[calc(100%-2rem)] max-w-xl rounded-lg border p-0 backdrop:bg-black/60">
   <input
     id="search-input"
     type="search"
@@ -97,7 +100,7 @@
         link.href = entry.url
         link.tabIndex = -1
         link.className =
-          'block rounded-lg px-3 py-2 in-aria-selected:bg-surface hover:bg-surface dark:in-aria-selected:bg-bg dark:hover:bg-bg'
+          'block rounded-lg px-3 py-2 transition-colors duration-100 in-aria-selected:bg-surface hover:bg-surface dark:in-aria-selected:bg-bg dark:hover:bg-bg'
 
         const title = document.createElement('span')
         title.className = 'block font-medium'
@@ -143,7 +146,9 @@
     else render(`'${query}'에 맞는 글과 프로젝트가 없습니다.`)
   }
 
-  const open = () => {
+  // 키보드(⌘K)로 열면 애니메이션 없이 바로 띄운다. 자주 쓰는 단축키가 느려 보이지 않게.
+  const open = (instant: boolean) => {
+    dialog.toggleAttribute('data-instant', instant)
     dialog.showModal()
     input.select()
     void update()
@@ -158,13 +163,13 @@
       ?.scrollIntoView({ block: 'nearest' })
   }
 
-  openButton.addEventListener('click', open)
+  openButton.addEventListener('click', () => open(false))
 
   document.addEventListener('keydown', event => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault()
       if (dialog.open) dialog.close()
-      else open()
+      else open(true)
     }
   })
 

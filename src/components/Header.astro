@@ -10,7 +10,7 @@ const isCurrent = (href: string) => path.startsWith(href)
 <header class="border-border flex items-center justify-between border-b py-5 print:hidden">
   <a
     href="/"
-    class="font-mono font-semibold">
+    class="press-fade font-mono font-semibold">
     {site.name}
   </a>
   <nav
@@ -20,7 +20,7 @@ const isCurrent = (href: string) => path.startsWith(href)
       <a
         href={item.href}
         aria-current={isCurrent(item.href) ? 'page' : undefined}
-        class="text-muted hover:text-fg aria-[current=page]:text-fg transition-colors">
+        class="text-muted hover:text-fg aria-[current=page]:text-fg press-fade">
         {item.label}
       </a>
     ))}

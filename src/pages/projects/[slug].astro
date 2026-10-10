@@ -2,6 +2,9 @@
 import { getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import PostList from '@/components/PostList.astro'
+import Card from '@/components/ui/Card.astro'
+import SectionHeader from '@/components/ui/SectionHeader.astro'
+import StackChips from '@/components/ui/StackChips.astro'
 import { ogImagePath } from '@/utils/og'
 import { getCases } from '@/utils/posts'
 import { formatKind, formatPeriod, getProjects } from '@/utils/projects'
@@ -48,11 +51,10 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
         <dd>{formatKind(data)}</dd>
         <dt class="text-muted">기술</dt>
         <dd>
-          <ul class="flex flex-wrap gap-1.5">
-            {data.stack.slice(0, chipLimit).map(item => (
-              <li class="chip">{item}</li>
-            ))}
-          </ul>
+          <StackChips
+            stack={data.stack}
+            limit={chipLimit}
+          />
           {data.stack.length > chipLimit && (
             <p class="text-muted mt-2 font-mono text-xs">
               {data.stack.slice(chipLimit).join(', ')}
@@ -65,7 +67,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
             <dd>
               <a
                 href={`/projects/${basedOn.id}/`}
-                class="text-accent underline underline-offset-4">
+                class="press-fade text-accent underline underline-offset-4">
                 {basedOn.data.name}
               </a>
             </dd>
@@ -78,7 +80,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
               {links.map(link => (
                 <a
                   href={link.href}
-                  class="text-accent underline underline-offset-4">
+                  class="press-fade text-accent underline underline-offset-4">
                   {link.label}
                 </a>
               ))}
@@ -89,7 +91,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
     </header>
 
     <section class="mt-10">
-      <h2 class="section-label">overview</h2>
+      <SectionHeader label="overview" />
       <div class="prose mt-4">
         <Content />
       </div>
@@ -97,8 +99,8 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
 
     {data.kind === 'team' && (
       <section class="mt-12">
-        <h2 class="section-label">boundary</h2>
-        <div class="bg-surface mt-4 rounded-2xl p-5">
+        <SectionHeader label="boundary" />
+        <Card class="mt-4">
           <h3 class="font-bold">내가 한 일</h3>
           <ul class="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed">
             {data.boundary.mine
@@ -110,7 +112,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
                     ref.url ? (
                       <a
                         href={ref.url}
-                        class="text-muted hover:text-accent ml-1.5 font-mono text-xs whitespace-nowrap underline-offset-4 transition-colors hover:underline">
+                        class="text-muted hover:text-accent ml-1.5 font-mono text-xs whitespace-nowrap underline-offset-4 press-fade hover:underline">
                         {ref.label}
                       </a>
                     ) : (
@@ -122,7 +124,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
                 </li>
               ))}
           </ul>
-        </div>
+        </Card>
         <div class="mt-6 px-5">
           <h3 class="text-muted font-bold">팀이 한 일</h3>
           <ul class="text-muted mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed">
@@ -136,7 +138,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
 
     {cases.length > 0 && (
       <section class="mt-12">
-        <h2 class="section-label">cases</h2>
+        <SectionHeader label="cases" />
         <PostList
           posts={cases}
           heading="h3"

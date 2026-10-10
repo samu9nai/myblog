@@ -1,5 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
+import Badge from '@/components/ui/Badge.astro'
+import Row from '@/components/ui/Row.astro'
 import { formatDate } from '@/utils/posts'
 
 interface Props {
@@ -13,27 +15,22 @@ const { posts, heading: Heading = 'h2' } = Astro.props
 
 <ul class="border-border mt-6 border-t">
   {posts.map(post => (
-    <li class="border-border border-b">
-      <a
-        href={`/posts/${post.id}/`}
-        class="group flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-        <span class="min-w-0">
-          <Heading class="group-hover:text-accent font-medium transition-colors">
-            {post.data.title}
-            {post.data.draft && (
-              <span class="text-muted ml-2 font-mono text-xs font-normal">
-                draft
-              </span>
-            )}
-          </Heading>
-          <p class="text-muted mt-1 text-sm">{post.data.description}</p>
-        </span>
-        <time
-          datetime={post.data.pubDate.toISOString()}
-          class="text-muted shrink-0 font-mono text-xs">
-          {formatDate(post.data.pubDate)}
-        </time>
-      </a>
-    </li>
+    <Row
+      href={`/posts/${post.id}/`}
+      class="py-4">
+      <span class="min-w-0">
+        <Heading class="group-hover:text-accent font-medium transition-colors">
+          {post.data.title}
+          {post.data.draft && <Badge>draft</Badge>}
+        </Heading>
+        <p class="text-muted mt-1 text-sm">{post.data.description}</p>
+      </span>
+      <time
+        slot="meta"
+        datetime={post.data.pubDate.toISOString()}
+        class="meta">
+        {formatDate(post.data.pubDate)}
+      </time>
+    </Row>
   ))}
 </ul>

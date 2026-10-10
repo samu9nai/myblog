@@ -1,5 +1,8 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import Badge from '@/components/ui/Badge.astro'
+import Row from '@/components/ui/Row.astro'
+import StackChips from '@/components/ui/StackChips.astro'
 import { formatKind, formatPeriod, getProjects } from '@/utils/projects'
 
 const projects = await getProjects()
@@ -18,45 +21,32 @@ const stackLimit = 6
   ) : (
     <ul class="border-border mt-6 border-t">
       {projects.map(project => (
-        <li class="border-border border-b">
-          <a
-            href={`/projects/${project.id}/`}
-            class="group block py-5">
-            <div class="flex items-baseline justify-between gap-4">
-              <h2 class="group-hover:text-accent font-medium transition-colors">
-                {project.data.name}
-                {project.data.draft && (
-                  <span class="text-muted ml-2 font-mono text-xs font-normal">
-                    draft
-                  </span>
-                )}
-              </h2>
-              <span class="text-muted shrink-0 font-mono text-xs">
-                {formatPeriod(project.data.period)}
-              </span>
-            </div>
-            <p class="text-muted mt-1 text-sm leading-relaxed">
-              {project.data.summary}
-            </p>
-            <p class="text-muted mt-2 line-clamp-1 text-sm">
-              <span class="font-mono text-xs">{formatKind(project.data)}</span>
-              <span class="mx-2">·</span>
-              {project.data.role.join(', ')}
-            </p>
-            <ul
-              aria-label="기술 스택"
-              class="mt-3 flex flex-wrap gap-1.5">
-              {project.data.stack.slice(0, stackLimit).map(item => (
-                <li class="chip">{item}</li>
-              ))}
-              {project.data.stack.length > stackLimit && (
-                <li class="text-muted px-1 font-mono text-[11px]">
-                  +{project.data.stack.length - stackLimit}
-                </li>
-              )}
-            </ul>
-          </a>
-        </li>
+        <Row
+          href={`/projects/${project.id}/`}
+          layout="block"
+          class="py-5">
+          <div class="flex items-baseline justify-between gap-4">
+            <h2 class="group-hover:text-accent font-medium transition-colors">
+              {project.data.name}
+              {project.data.draft && <Badge>draft</Badge>}
+            </h2>
+            <span class="meta">{formatPeriod(project.data.period)}</span>
+          </div>
+          <p class="text-muted mt-1 text-sm leading-relaxed">
+            {project.data.summary}
+          </p>
+          <p class="text-muted mt-2 line-clamp-1 text-sm">
+            <span class="font-mono text-xs">{formatKind(project.data)}</span>
+            <span class="mx-2">·</span>
+            {project.data.role.join(', ')}
+          </p>
+          <StackChips
+            stack={project.data.stack}
+            limit={stackLimit}
+            count
+            class="mt-3"
+          />
+        </Row>
       ))}
     </ul>
   )}

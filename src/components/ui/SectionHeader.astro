@@ -1,0 +1,23 @@
+---
+interface Props {
+  label: string
+  // 주면 오른쪽에 '전체 보기' 같은 링크를 붙인다.
+  href?: string
+  more?: string
+}
+
+const { label, href, more } = Astro.props
+---
+
+{href ? (
+  <div class="flex items-baseline justify-between">
+    <h2 class="section-label">{label}</h2>
+    <a
+      href={href}
+      class="text-muted hover:text-accent text-xs press-fade">
+      {more}
+    </a>
+  </div>
+) : (
+  <h2 class="section-label">{label}</h2>
+)}

@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+
+/* dark: 변형은 OS 설정이 아니라 사이트 테마(data-theme)를 따른다. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 @import '@fontsource/maple-mono/400.css';
 @import '@fontsource/maple-mono/600.css';
 
@@ -190,6 +193,24 @@
   }
 }
 
+/* 테마 아이콘의 꺼진 상태와 켜진 상태. dark: 변형을 붙여 쓰려고 유틸리티로 둔다. */
+@utility theme-icon-off {
+  opacity: 0;
+  rotate: -90deg;
+  scale: 0.5;
+
+  @media (prefers-reduced-motion: reduce) {
+    rotate: none;
+    scale: none;
+  }
+}
+
+@utility theme-icon-on {
+  opacity: 1;
+  rotate: none;
+  scale: none;
+}
+
 /* 사이트 공통 조각. 메타데이터(날짜·라벨·근거·스택)만 mono로 쓴다. */
 @layer components {
   /* 섹션 라벨: 작은 소문자 mono (예: projects, writing) */
@@ -197,12 +218,24 @@
     @apply text-label font-mono text-xs tracking-wider lowercase;
   }
 
-  /* 핵심 단어: 금빛 밑줄. 링크(강조색 글자, 1px 밑줄)와 헷갈리지 않게 굵고 낮게 긋는다. */
+  /*
+   * 핵심 단어: 금빛 밑줄. 링크(강조색 글자, 1px 밑줄)와 헷갈리지 않게 굵고 낮게 긋는다.
+   * 왼쪽에서 오른쪽으로 그려지도록 text-decoration 대신 배경으로 긋는다. 줄이 바뀌어도
+   * slice라서 앞 줄을 다 그은 뒤 다음 줄로 이어진다. --i는 Emphasis.astro가 붙이는 순번이다.
+   */
   .emphasis {
     @apply text-fg font-normal;
-    text-decoration: underline 3px var(--gold);
-    text-underline-offset: 0.32em;
-    text-decoration-skip-ink: none;
+    padding-bottom: 0.3em;
+    background: linear-gradient(var(--gold), var(--gold)) left bottom / 100% 3px
+      no-repeat;
+    box-decoration-break: slice;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .emphasis {
+      animation: draw-underline 600ms var(--ease-out) backwards;
+      animation-delay: calc(200ms + var(--i, 0) * 150ms);
+    }
   }
 
   /* 네 갈래 별. 큐어 아르카나의 별에서 가져왔다. */
@@ -218,6 +251,34 @@
       0% 50%,
       39% 39%
     );
+  }
+
+  /* 행 오른쪽의 날짜·기간·출처 */
+  .meta {
+    @apply text-muted shrink-0 font-mono text-xs;
+  }
+
+  /* 행 hover: 행 뒤에 면을 깐다. 레이아웃을 바꾸지 않게 가상 요소를 좌우로 12px 넓혀 그린다. */
+  @media (hover: hover) and (pointer: fine) {
+    .row-hover {
+      position: relative;
+      isolation: isolate;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0.25rem -0.75rem;
+        z-index: -1;
+        border-radius: var(--radius-lg);
+        background-color: var(--surface);
+        opacity: 0;
+        transition: opacity 150ms ease;
+      }
+
+      &:hover::before {
+        opacity: 1;
+      }
+    }
   }
 
   /* 기술 스택 칩 */
@@ -254,6 +315,118 @@
     }
   }
 
+  /* 누르면 잠깐 옅어진다. 행·글자 링크처럼 크기를 줄이면 어색한 곳에 쓴다.
+     글자색 전환도 맡으므로 transition-colors와 함께 쓰지 않는다. */
+  .press-fade {
+    transition:
+      opacity 150ms ease,
+      color 150ms ease;
+
+    &:active {
+      opacity: 0.6;
+    }
+  }
+
+  /*
+   * 검색창: 살짝 커지며 나타나고 같은 길로 사라진다. ⌘K로 열면 data-instant가 붙어 바로 뜬다.
+   * 닫힐 때도 그려지도록 display·overlay를 allow-discrete로 늦춘다(지원하지 않는 브라우저는 바로 닫힌다).
+   */
+  .dialog-pop {
+    --pop-scale: 0.97;
+    opacity: 0;
+    scale: var(--pop-scale);
+    transition:
+      opacity 150ms var(--ease-out),
+      scale 150ms var(--ease-out),
+      overlay 150ms allow-discrete,
+      display 150ms allow-discrete;
+
+    &[open] {
+      opacity: 1;
+      scale: 1;
+    }
+
+    &::backdrop {
+      opacity: 0;
+      transition:
+        opacity 150ms ease,
+        overlay 150ms allow-discrete,
+        display 150ms allow-discrete;
+    }
+
+    &[open]::backdrop {
+      opacity: 1;
+    }
+
+    &[data-instant],
+    &[data-instant]::backdrop {
+      transition: none;
+    }
+  }
+
+  @starting-style {
+    .dialog-pop[open],
+    .dialog-pop[open]::backdrop {
+      opacity: 0;
+    }
+
+    .dialog-pop[open] {
+      scale: var(--pop-scale);
+    }
+  }
+
+  /* 테마 버튼: 해와 달이 같은 자리에 겹쳐 있고, 사라지는 쪽은 돌며 작아진다. */
+  .theme-icon {
+    transition:
+      opacity 200ms ease,
+      rotate 300ms var(--ease-out),
+      scale 300ms var(--ease-out);
+  }
+
+  /* 404의 모노그램: 획을 따라 그린 뒤 양 끝 커밋 점이 찍힌다. */
+  @media (prefers-reduced-motion: no-preference) {
+    .monogram-draw {
+      & path {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: draw-stroke 900ms var(--ease-in-out) 150ms forwards;
+      }
+
+      & circle {
+        opacity: 0;
+        scale: 0.4;
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: pop-in 300ms var(--ease-out) forwards;
+      }
+
+      & circle:first-of-type {
+        animation-delay: 150ms;
+      }
+
+      & circle:last-of-type {
+        animation-delay: 1000ms;
+      }
+    }
+  }
+
+  /* timeline의 별: 화면 아래쪽 25%를 지나는 동안 돌며 커진다. 스크롤 위치를 따라가고, 지원하지 않으면 그대로 있다. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /* 빌드 도구가 animation-timeline을 animation 단축 속성에 합치면 브라우저가 버려서 따로 적는다. */
+      .star-reveal {
+        animation-name: star-in;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+      }
+
+      .star.star-reveal {
+        animation-timeline: view();
+        animation-range: cover 0% cover 25%;
+      }
+    }
+  }
+
   /* hover하면 화살표만 가리키는 방향으로 2px 움직인다. 마우스가 있는 기기에서만. */
   .nudge-ne,
   .nudge-e,
@@ -287,6 +460,10 @@
     .group:hover .nudge-w {
       transform: none;
     }
+
+    .dialog-pop {
+      --pop-scale: 1;
+    }
   }
 }
 
@@ -307,8 +484,14 @@
       @apply mt-8 text-base font-bold;
     }
 
+    /* .press-fade와 같은 누름 피드백 */
     & a {
       @apply text-accent underline underline-offset-4;
+      transition: opacity 150ms ease;
+
+      &:active {
+        opacity: 0.6;
+      }
     }
 
     & ul {
@@ -357,8 +540,12 @@
         @apply max-w-none shrink-0;
       }
 
+      /* 끝까지 밀면 흐림이 200ms에 걸쳐 걷힌다. --fade는 아래 @property로 등록해 전환할 수 있다. */
+      mask-image: linear-gradient(to right, #000 var(--fade), transparent);
+      transition: --fade 200ms var(--ease-out);
+
       &.is-clipped {
-        mask-image: linear-gradient(to right, #000 88%, transparent);
+        --fade: 88%;
       }
 
       /* 그리기 전 원문은 숨기고, 그림은 200ms에 걸쳐 나타난다. 스크립트가 붙인 클래스라 JS가 없으면 원문이 보인다. */
@@ -393,9 +580,57 @@
     'ss08' 1;
 }
 
+/* 코드 블록 복사 버튼도 다른 버튼처럼 눌린다. Expressive Code의 전환(opacity 등 0.2s)에 scale만 더한다. */
+.prose .expressive-code .copy button {
+  transition-property: opacity, background, border-color, scale;
+
+  &:active {
+    scale: 0.95;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prose .expressive-code .copy button:active {
+    scale: none;
+  }
+}
+
+@property --fade {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
+  }
+}
+
+@keyframes draw-underline {
+  from {
+    background-size: 0% 3px;
+  }
+}
+
+@keyframes draw-stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pop-in {
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes star-in {
+  from {
+    opacity: 0;
+    rotate: -90deg;
+    scale: 0.3;
   }
 }
 
