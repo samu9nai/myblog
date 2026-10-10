@@ -1,10 +1,13 @@
-<button
-  type="button"
+---
+import Button from '@/components/ui/Button.astro'
+---
+
+<Button
+  variant="icon"
   id="search-open"
   aria-label="검색"
   aria-keyshortcuts="Meta+K Control+K"
-  title="검색 (⌘K)"
-  class="text-muted hover:text-fg hover:bg-surface press -m-2 rounded-lg p-2">
+  title="검색 (⌘K)">
   <svg
     class="size-4"
     viewBox="0 0 24 24"
@@ -19,7 +22,7 @@
       r="7"></circle>
     <path d="m20 20-3.5-3.5"></path>
   </svg>
-</button>
+</Button>
 
 <dialog
   id="search-dialog"

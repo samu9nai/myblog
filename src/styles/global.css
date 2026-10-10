@@ -220,6 +220,11 @@
     );
   }
 
+  /* 행 오른쪽의 날짜·기간·출처 */
+  .meta {
+    @apply text-muted shrink-0 font-mono text-xs;
+  }
+
   /* 기술 스택 칩 */
   .chip {
     @apply border-border text-muted rounded border px-1.5 py-px font-mono text-[11px];

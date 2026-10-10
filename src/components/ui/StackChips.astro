@@ -1,0 +1,24 @@
+---
+interface Props {
+  stack: string[]
+  // 앞쪽 대표 기술만 칩으로 보인다.
+  limit: number
+  // 칩 뒤에 남은 개수(+N)를 붙인다.
+  count?: boolean
+  class?: string
+}
+
+const { stack, limit, count = false, class: className } = Astro.props
+const rest = stack.length - limit
+---
+
+<ul
+  aria-label="기술 스택"
+  class:list={['flex flex-wrap gap-1.5', className]}>
+  {stack.slice(0, limit).map(item => (
+    <li class="chip">{item}</li>
+  ))}
+  {count && rest > 0 && (
+    <li class="text-muted px-1 font-mono text-[11px]">+{rest}</li>
+  )}
+</ul>

@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'button'> & {
+  // 주면 링크(<a>)로, 없으면 버튼으로 그린다.
+  href?: string
+  variant?: keyof typeof variants
+}
+
+// solid: 한 화면에 하나만 두는 주 동작. icon: 헤더의 아이콘 버튼.
+const variants = {
+  solid:
+    'bg-fg text-bg rounded-lg px-3.5 py-1.5 text-sm font-medium hover:opacity-85',
+  icon: 'text-muted hover:text-fg hover:bg-surface -m-2 rounded-lg p-2'
+}
+
+const { href, variant = 'solid', class: className, ...rest } = Astro.props
+---
+
+{href ? (
+  <a
+    href={href}
+    {...rest}
+    class:list={['press', variants[variant], className]}>
+    <slot />
+  </a>
+) : (
+  <button
+    type="button"
+    {...rest}
+    class:list={['press', variants[variant], className]}>
+    <slot />
+  </button>
+)}
