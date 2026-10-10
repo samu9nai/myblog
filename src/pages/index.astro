@@ -43,7 +43,7 @@ const month = (value: string) => value.replace('-', '.')
       <Button href="/resume/">이력서</Button>
       <a
         href={`mailto:${profile.email}`}
-        class="hover:text-accent text-sm transition-colors">
+        class="hover:text-accent text-sm press-fade">
         메일 보내기
       </a>
     </div>
@@ -148,7 +148,7 @@ const month = (value: string) => value.replace('-', '.')
       <ol class="border-border mt-4 ml-1 border-l">
         {timeline.map(item => (
           <li class="relative pb-4 pl-5 last:pb-0">
-            <span class="star absolute top-[5px] -left-[5.5px]" />
+            <span class="star star-reveal absolute top-[5px] -left-[5.5px]" />
             <p class="flex gap-4 text-sm">
               <span class="text-muted w-14 shrink-0 font-mono text-xs leading-5">
                 {month(item.start)}

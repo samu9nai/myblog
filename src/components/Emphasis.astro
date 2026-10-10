@@ -6,9 +6,19 @@ interface Props {
 }
 
 // 문단은 회색으로 두고, 강조한 단어만 본문색과 금빛 밑줄로 밝힌다.
+// 밑줄은 강조한 순서대로 차례로 그려진다(--i).
 const parts = splitEmphasis(Astro.props.text)
+let order = 0
 ---
 
 {parts.map(({ part, strong }) =>
-  strong ? <strong class="emphasis">{part}</strong> : part
+  strong ? (
+    <strong
+      class="emphasis"
+      style={`--i: ${order++}`}>
+      {part}
+    </strong>
+  ) : (
+    part
+  )
 )}

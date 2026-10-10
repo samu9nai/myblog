@@ -4,10 +4,11 @@ import Button from '@/components/ui/Button.astro'
 
 <Button
   variant="icon"
+  class="grid"
   id="theme-toggle"
   aria-label="다크 모드로 전환">
   <svg
-    class="size-4 dark:hidden"
+    class="theme-icon dark:theme-icon-off col-start-1 row-start-1 size-4"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -17,7 +18,7 @@ import Button from '@/components/ui/Button.astro'
     <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
   </svg>
   <svg
-    class="hidden size-4 dark:block"
+    class="theme-icon theme-icon-off dark:theme-icon-on col-start-1 row-start-1 size-4"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

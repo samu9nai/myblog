@@ -67,7 +67,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
             <dd>
               <a
                 href={`/projects/${basedOn.id}/`}
-                class="text-accent underline underline-offset-4">
+                class="press-fade text-accent underline underline-offset-4">
                 {basedOn.data.name}
               </a>
             </dd>
@@ -80,7 +80,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
               {links.map(link => (
                 <a
                   href={link.href}
-                  class="text-accent underline underline-offset-4">
+                  class="press-fade text-accent underline underline-offset-4">
                   {link.label}
                 </a>
               ))}
@@ -112,7 +112,7 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
                     ref.url ? (
                       <a
                         href={ref.url}
-                        class="text-muted hover:text-accent ml-1.5 font-mono text-xs whitespace-nowrap underline-offset-4 transition-colors hover:underline">
+                        class="text-muted hover:text-accent ml-1.5 font-mono text-xs whitespace-nowrap underline-offset-4 press-fade hover:underline">
                         {ref.label}
                       </a>
                     ) : (
