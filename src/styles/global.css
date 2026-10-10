@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+
+/* dark: 변형은 OS 설정이 아니라 사이트 테마(data-theme)를 따른다. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 @import '@fontsource/maple-mono/400.css';
 @import '@fontsource/maple-mono/600.css';
 
