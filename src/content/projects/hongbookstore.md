@@ -7,9 +7,9 @@ period:
 kind: team
 teamSize: 4
 role:
-  - '인증 백엔드: JWT, OAuth2 소셜 로그인(Google·Naver·Kakao), 학교 이메일 인증'
+  - '인증 백엔드: JWT, OAuth2 소셜 로그인(Google·Naver·Kakao), 학교 이메일 인증의 서버 토큰 방식 재구현'
   - '중고책 판매글: 카카오 책 API·ISBN 등록, 이미지 업로드, 찜, 정렬, 거래 후기'
-  - '유해 표현 필터 연동: 추론 API 클라이언트와 필드별 BLOCK·WARN 정책'
+  - '유해 표현 필터: 추론 서버 서빙·배포(Flask, Cloud Run)와 Spring 연동, 필드별 BLOCK·WARN 정책'
   - '배포: Docker, GitHub Actions → GCP Cloud Run, Vercel'
 stack:
   - Java 21
@@ -31,17 +31,25 @@ stack:
   - GCP Cloud Run
   - GitHub Actions
   - Vercel
+  - Python
+  - Flask
 # 근거: 기획 문서 "프로젝트 조사" 탭의 홍책방 절. 팀원의 마지막 커밋 715994a(2025-10-12)까지만 원본 성과로 본다.
+# 2026-10-11 HongikBookStore 저장소 2개의 커밋 기록과 대조했다. 설계는 2025-03, 저장소 생성과 구현은 2025-06부터다.
 boundary:
   mine:
     - 프로젝트 초기 세팅 (React 생성, CRA → Vite 전환, RDS 연동, 패키지 구조)
-    - JWT 로그인을 소셜 로그인으로 전환, 학교 이메일 인증, 아이디 찾기·비밀번호 재설정
+    - JWT 로그인을 소셜 로그인으로 전환, 아이디 찾기·비밀번호 재설정
+    - 학교 이메일 인증을 서버 발급 토큰과 STUDENT 권한 방식으로 재구현
     - 판매글 작성·조회, 카카오 책 API 검색, ISBN이 없는 책 등록
     - 판매글 이미지 업로드, 조회수·찜 순 정렬, 찜, 최근 본 판매글
+    - 마이페이지 위치 저장 백엔드와 카카오 우편번호 주소 검색
     - 구매자·판매자 거래 후기 통합
+    - 유해 표현 추론 서버(toxic-filter) 서빙·경량화·Cloud Run 배포
     - 유해 표현 필터 클라이언트와 필드별 BLOCK·WARN 정책
-    - Docker·GitHub Actions·Cloud Run 배포, Vercel 프록시, 운영 OAuth 콜백 수정
+    - Docker·GitHub Actions·Cloud Run 배포, Vercel 프록시, 운영 OAuth 콜백 수정, dependabot 설정
   team:
+    - 최초 재학생 인증(UnivCert) 연동
+    - 유해 표현 모델(KcBERT) 파인튜닝
     - 네이버 지도·장소 검색·장소 리뷰, 사용자 지도 카테고리
     - STOMP 채팅과 SSE 알림
     - 스마트 예약 (중간 지점 추천, 날씨)
@@ -57,4 +65,4 @@ order: 3
 
 학교 이메일로 학생임을 확인하고, 판매글은 카카오 책 API로 책 정보를 채운다. 거래는 채팅과 예약으로 이어지고, 게시글과 채팅의 유해 표현은 별도 추론 서버로 걸러 낸다.
 
-나는 인증과 판매글 백엔드, 유해 표현 필터 연동, 배포를 맡았다. 원본 저장소는 보관(archived)됐다.
+나는 인증과 판매글 백엔드, 유해 표현 추론 서버와 연동, 배포를 맡았다. 유해 표현 모델의 파인튜닝은 팀원이 했다. 원본 저장소는 보관(archived)됐다.
