@@ -3,7 +3,7 @@ name: 홍책방
 summary: 홍익대학교 학생 전용 중고 교재 거래·정보 공유 플랫폼 (2025학년도 컴퓨터공학과 졸업 프로젝트)
 period:
   start: 2025-03
-  end: 2025-11
+  end: 2025-10
 kind: team
 teamSize: 4
 role:
