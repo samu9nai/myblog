@@ -2,7 +2,7 @@ import { getCollection } from 'astro:content'
 import { checkProjects, isVisible } from '@/utils/projects'
 
 /**
- * 공개할 글을 최신순으로 돌려준다. 같은 날 발행한 사례 글은 caseOrder 순서로 둔다.
+ * 공개할 글을 최신순으로 돌려준다. 같은 날 발행한 사례 글은 프로젝트끼리 모아 caseOrder 순서로 둔다.
  * draft는 개발 서버에서만 보인다.
  */
 export async function getPosts() {
@@ -11,6 +11,7 @@ export async function getPosts() {
   return posts.sort(
     (a, b) =>
       b.data.pubDate.valueOf() - a.data.pubDate.valueOf() ||
+      (a.data.project?.id ?? '').localeCompare(b.data.project?.id ?? '') ||
       (a.data.caseOrder ?? Infinity) - (b.data.caseOrder ?? Infinity)
   )
 }
