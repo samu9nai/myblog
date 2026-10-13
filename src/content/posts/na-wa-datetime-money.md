@@ -8,7 +8,7 @@ tags:
   - datetime
   - frontend
 project: na-wa
-caseOrder: 4
+caseOrder: 5
 ---
 
 > **성과:** 모양이 비슷한 달력 날짜와 서버 instant를 다른 파이프라인으로 분리하고, decimal string을 `Number`로 바꾸지 않는 포맷터를 도입해 시간대·정밀도 오류를 공용 경계에서 막았습니다.

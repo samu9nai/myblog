@@ -8,7 +8,7 @@ tags:
   - typography
   - frontend
 project: na-wa
-caseOrder: 5
+caseOrder: 6
 ---
 
 > **성과:** 번역 키의 구조적 완전성과 문장의 자연스러움을 별도 품질 문제로 다루고, CJK 본문·디스플레이 글꼴을 로케일별 `unicode-range` 슬라이스로 self-hosting해 브랜드 표현과 전송 비용을 함께 제어했습니다.

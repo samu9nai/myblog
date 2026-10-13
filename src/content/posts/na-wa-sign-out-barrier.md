@@ -8,7 +8,7 @@ tags:
   - concurrency
   - frontend
 project: na-wa
-caseOrder: 2
+caseOrder: 3
 ---
 
 > **성과:** 로그아웃 요청이 전송된 뒤 응답을 받지 못한 상태를 성공이나 실패로 추측하지 않고, 브라우저가 새 인증을 확인할 때까지 refresh·원 요청 재시도를 차단하는 영속 장벽을 설계했습니다.

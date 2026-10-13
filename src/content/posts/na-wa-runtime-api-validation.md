@@ -8,7 +8,7 @@ tags:
   - typescript
   - frontend
 project: na-wa
-caseOrder: 3
+caseOrder: 4
 ---
 
 > **성과:** TypeScript 타입과 다른 백엔드 응답이 화면 깊숙이 전파되던 문제를, 기존 API 전체를 깨뜨리지 않는 요청별 Zod 검증과 feature 소유 스키마로 차단했습니다.
