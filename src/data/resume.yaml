@@ -15,7 +15,7 @@ highlights:
     short: 'Hibernate lost update를 실제 DB에서 재현하고, 수정을 되돌려 검증'
     source: '소때잡 server PR #42'
     link: 'https://github.com/jittaejap/sottaejap-server/pull/42'
-  - text: '설계 경계 — AI는 입구와 출구에만 두고, 판단·집계·금액 계산은 서버의 결정론적 규칙 엔진이 소유하도록 분리'
+  - text: '설계 경계 — AI는 입구(후보 제안)와 출구(설명)에만 두고, 후보 선별·묶음·롤업·판정은 서버 규칙 엔진의 결정론적 순수 함수로 구현'
     short: '판단은 규칙 엔진에, AI는 후보 제안과 설명에만'
     source: '소때잡 server PR #6'
     link: 'https://github.com/jittaejap/sottaejap-server/pull/6'
