@@ -1,5 +1,5 @@
 ---
-import type { CollectionEntry } from 'astro:content'
+import { getCollection, type CollectionEntry } from 'astro:content'
 import Badge from '@/components/ui/Badge.astro'
 import Row from '@/components/ui/Row.astro'
 import { formatDate } from '@/utils/posts'
@@ -8,9 +8,17 @@ interface Props {
   posts: CollectionEntry<'posts'>[]
   // 목록이 h2 섹션 안에 들어가면 h3로 낮춘다.
   heading?: 'h2' | 'h3'
+  // 사례 글에 'NA-WA 사례 2' 같은 출처를 붙인다. 한 프로젝트의 사례만 모은 목록에서는 끈다.
+  showCase?: boolean
 }
 
-const { posts, heading: Heading = 'h2' } = Astro.props
+const { posts, heading: Heading = 'h2', showCase = true } = Astro.props
+const projectNames = new Map(
+  (await getCollection('projects')).map(project => [
+    project.id,
+    project.data.name
+  ])
+)
 ---
 
 <ul class="border-border mt-6 border-t">
@@ -24,6 +32,11 @@ const { posts, heading: Heading = 'h2' } = Astro.props
           {post.data.draft && <Badge>draft</Badge>}
         </Heading>
         <p class="text-muted mt-1 text-sm">{post.data.description}</p>
+        {showCase && post.data.project && (
+          <p class="meta mt-1.5">
+            {projectNames.get(post.data.project.id)} 사례 {post.data.caseOrder}
+          </p>
+        )}
       </span>
       <time
         slot="meta"
