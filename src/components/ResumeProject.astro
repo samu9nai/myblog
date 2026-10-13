@@ -1,5 +1,5 @@
 ---
-import type { CollectionEntry } from 'astro:content'
+import { getEntry, type CollectionEntry } from 'astro:content'
 import { formatPeriod } from '@/utils/projects'
 
 type Item = CollectionEntry<'resume'>['data']['projects'][number]
@@ -15,6 +15,12 @@ const facts = [
   ['기여', item.contribution],
   ['기술', item.stack.join(', ')]
 ].filter((fact): fact is [string, string] => Boolean(fact[1]))
+const work = await Promise.all(
+  item.work.map(async line => ({
+    ...line,
+    case: line.case && (await getEntry(line.case))
+  }))
+)
 ---
 
 <article class="mt-8 first:mt-6">
@@ -41,21 +47,24 @@ const facts = [
       </>
     ))}
   </dl>
-  {item.work.map(work => (
-    <section class="mt-5 break-inside-avoid">
-      <h4 class="font-bold">
-        {work.title}
-        {work.refs && (
-          <span class="text-muted ml-2 font-mono text-xs font-normal">
-            {work.refs}
+  <ul class="mt-4 list-disc space-y-1.5 pl-5 text-sm leading-relaxed">
+    {work.map(line => (
+      <li class="break-inside-avoid">
+        {line.text}
+        {line.refs && (
+          <span class="text-muted ml-2 font-mono text-xs whitespace-nowrap">
+            {line.refs}
           </span>
         )}
-      </h4>
-      <ul class="mt-1.5 list-disc space-y-1 pl-5 text-sm leading-relaxed">
-        {work.points.map(point => (
-          <li>{point}</li>
-        ))}
-      </ul>
-    </section>
-  ))}
+        {line.case && (
+          <a
+            href={`/posts/${line.case.id}/`}
+            aria-label={`사례 글: ${line.case.data.title}`}
+            class="text-muted hover:text-accent ml-2 font-mono text-xs whitespace-nowrap underline underline-offset-4 press-fade">
+            사례
+          </a>
+        )}
+      </li>
+    ))}
+  </ul>
 </article>

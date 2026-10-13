@@ -94,13 +94,15 @@ const resumeProject = z.object({
   role: z.string(),
   contribution: z.string().optional(),
   stack: z.array(z.string()).min(1),
+  // 한 줄에 결과 하나. 과정은 사례 글이 맡는다.
   work: z
     .array(
       z.object({
-        title: z.string(),
+        text: z.string(),
         // PR·이슈 번호 같은 근거 (예: PR #41)
         refs: z.string().optional(),
-        points: z.array(z.string()).min(1)
+        // 있으면 과정을 풀어 쓴 사례 글로 링크한다.
+        case: reference('posts').optional()
       })
     )
     .min(1)

@@ -131,6 +131,11 @@
     --mark: #b0336d;
     color-scheme: light;
   }
+
+  /* 화면 글자 단계는 종이에 크다. rem 기준을 줄여 이력서를 A4 2쪽 안에 넣는다. */
+  :root {
+    font-size: 14px;
+  }
 }
 
 @page {
