@@ -560,6 +560,26 @@
   }
 }
 
+/* 인쇄할 때는 가로 스크롤 대신 종이 폭에 맞춰 줄이고, 그림을 쪽 사이에서 자르지 않는다. */
+@media print {
+  .prose pre.mermaid {
+    overflow: visible;
+    mask-image: none;
+    break-inside: avoid;
+
+    & > svg {
+      max-width: 100%;
+      height: auto;
+      animation: none;
+    }
+
+    /* 그리기 전에 인쇄하면(브라우저 메뉴의 인쇄) 빈칸 대신 원문을 찍는다. */
+    &.is-pending {
+      color: var(--muted);
+    }
+  }
+}
+
 /* 예전 블로그에서 옮긴 Maple Mono 리거처와 글자 변형 설정이다. */
 .prose .expressive-code pre > code {
   font-variant-ligatures: common-ligatures contextual;

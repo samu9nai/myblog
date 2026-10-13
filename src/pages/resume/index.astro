@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro'
 import Emphasis from '@/components/Emphasis.astro'
 import Highlights from '@/components/Highlights.astro'
+import PrintButton from '@/components/PrintButton.astro'
 import ResumeProject from '@/components/ResumeProject.astro'
 import { formatMonths, totalMonths } from '@/utils/duration'
 import { formatPeriod } from '@/utils/projects'
@@ -32,6 +33,7 @@ const githubLabel =
         class="hover:text-accent press-fade">
         {githubLabel}
       </a>
+      <PrintButton />
     </p>
     <p class="text-muted mt-6 leading-relaxed">
       <Emphasis text={profile.summary} />

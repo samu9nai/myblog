@@ -2,6 +2,7 @@
 import { getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import PostList from '@/components/PostList.astro'
+import PrintButton from '@/components/PrintButton.astro'
 import Card from '@/components/ui/Card.astro'
 import SectionHeader from '@/components/ui/SectionHeader.astro'
 import StackChips from '@/components/ui/StackChips.astro'
@@ -42,7 +43,10 @@ const links = (Object.keys(linkLabels) as (keyof typeof linkLabels)[])
   })}>
   <article>
     <header class="border-border border-b pb-6">
-      <h1 class="text-xl font-bold">{data.name}</h1>
+      <div class="flex items-baseline justify-between gap-4">
+        <h1 class="text-xl font-bold">{data.name}</h1>
+        <PrintButton class="shrink-0 font-mono text-sm" />
+      </div>
       <p class="text-muted mt-2">{data.summary}</p>
       <dl class="mt-6 grid grid-cols-[3.5rem_1fr] gap-x-4 gap-y-2 text-sm sm:grid-cols-[5rem_1fr]">
         <dt class="text-muted">기간</dt>
