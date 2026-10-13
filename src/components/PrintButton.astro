@@ -1,0 +1,26 @@
+---
+// 이력서·프로젝트·글을 A4로 인쇄한다. 브라우저 인쇄 창에서 'PDF로 저장'을 고르면 PDF가 된다.
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<button
+  type="button"
+  data-print
+  class:list={[
+    'text-muted hover:text-accent press-fade cursor-pointer print:hidden',
+    className
+  ]}>
+  PDF로 저장
+</button>
+
+<script>
+  import { printPage } from '@/utils/print'
+
+  document
+    .querySelectorAll('[data-print]')
+    .forEach(button => button.addEventListener('click', () => void printPage()))
+</script>
