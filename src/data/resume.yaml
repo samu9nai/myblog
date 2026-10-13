@@ -1,5 +1,5 @@
 # 이력서 데이터. 내용은 ~/career-portfolio/03-경력기술서-백엔드.docx(2026-09-27)에서 옮겼다.
-# 교육은 2026-10-07 사용자에게 받았다. 수상은 아직 없다.
+# 교육은 2026-10-07, 수상은 2026-10-14 사용자에게 받았다.
 profile:
   name: '정민규'
   title: '백엔드 개발자'
@@ -133,3 +133,14 @@ skills:
       - 'TanStack Query'
       - 'Pinia'
       - 'zod'
+# 최신순으로 적는다.
+awards:
+  - name: "KB IT's Your Life 해커톤 장려상"
+    issuer: 'KB국민은행'
+    date: '2026-09'
+  - name: "KB IT's Your Life 7기 최종 프로젝트 최우수상"
+    issuer: 'KB국민은행'
+    date: '2026-08'
+  - name: '홍익대학교 졸업프로젝트 장려상'
+    issuer: '홍익대학교'
+    date: '2025-11'
