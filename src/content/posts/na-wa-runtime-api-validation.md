@@ -34,7 +34,7 @@ TypeScript의 제네릭은 컴파일 후 사라지므로 `get<Foo>()`가 실제 
 ## 해결 방법
 
 ```mermaid
-flowchart LR
+flowchart TD
     F[Feature API] -->|responseSchema 지정| A[Axios 요청]
     A --> I[공용 success interceptor]
     I --> P{safeParse 성공?}
