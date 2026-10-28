@@ -41,14 +41,14 @@ const githubLabel =
   </header>
 
   {highlights.length > 0 && (
-    <section class="mt-10 break-inside-avoid">
+    <section class="mt-10 print:mt-7 break-inside-avoid">
       <h2 class="border-border border-b pb-2 text-lg font-bold">핵심 역량</h2>
       <Highlights highlights={highlights} />
     </section>
   )}
 
   {experience.length > 0 && (
-    <section class="mt-10">
+    <section class="mt-10 print:mt-7">
       <h2 class="border-border flex items-baseline justify-between border-b pb-2 break-after-avoid">
         <span class="text-lg font-bold">경력</span>
         <span class="text-muted font-mono text-sm">
@@ -78,7 +78,7 @@ const githubLabel =
   )}
 
   {projects.length > 0 && (
-    <section class="mt-10">
+    <section class="mt-10 print:mt-7">
       <h2 class="border-border border-b pb-2 text-lg font-bold break-after-avoid">
         프로젝트
       </h2>
@@ -88,7 +88,7 @@ const githubLabel =
     </section>
   )}
 
-  <section class="mt-10 break-inside-avoid">
+  <section class="mt-10 print:mt-7 break-inside-avoid">
     <h2 class="border-border border-b pb-2 text-lg font-bold">기술</h2>
     <dl class="mt-4 grid grid-cols-[6rem_1fr] gap-x-4 gap-y-2 text-sm">
       {skills.map(skill => (
@@ -101,7 +101,7 @@ const githubLabel =
   </section>
 
   {education.length > 0 && (
-    <section class="mt-10 break-inside-avoid">
+    <section class="mt-10 print:mt-7 break-inside-avoid">
       <h2 class="border-border border-b pb-2 text-lg font-bold">교육</h2>
       <ul class="mt-4 space-y-2">
         {education.map(item => (
@@ -122,7 +122,7 @@ const githubLabel =
   )}
 
   {awards.length > 0 && (
-    <section class="mt-10 break-inside-avoid">
+    <section class="mt-10 print:mt-7 break-inside-avoid">
       <h2 class="border-border border-b pb-2 text-lg font-bold">수상</h2>
       <ul class="mt-4 space-y-2">
         {awards.map(award => (
