@@ -56,16 +56,16 @@ projects:
       - text: '여행 리포트 비교 API — 동료(GROUP)는 현재 원장으로 다시 계산하고, 유사 사용자(SIMILAR)는 스냅샷 평균만 반환해 개인 노출 차단'
         refs: 'PR #400 · #416'
         case: 'na-wa-report-comparison'
-      - text: '요청별 zod 응답 검증 도입 — 지정한 호출만 검증하는 opt-in 구조, 번들 증가 +0.22kB(gzip)'
+      - text: '타입과 다른 백엔드 응답이 화면에 퍼지기 전에 막는 요청별 Zod 응답 검증 — 지정한 호출만 검증하는 opt-in 구조, 공통 번들 +0.22kB · 별도 청크 17.51kB(gzip)'
         refs: 'PR #188'
         case: 'na-wa-runtime-api-validation'
   - name: '소때잡'
     project: 'jittaejap'
-    summary: '결제 시각에 "그 소비, 만족했나요"를 묻는 소비 회고 서비스 (회고 · 만족도 지도 · 절감 제안)'
+    summary: '며칠 지난 카드 소비를 돌아보며 지킬 소비와 줄일 소비를 가르는 소비 회고 서비스 (회고 · 만족도 지도 · 절감 제안)'
     period:
       start: '2026-09'
       end: '2026-09'
-    context: '해커톤 · 팀 지때잡 (5명)'
+    context: "KB IT's Your Life 해커톤 · 팀 지때잡 (5명)"
     role: '회고 규칙 엔진(후보 선별·묶음·롤업·판정) 구현 · 회고 API · 월간 리포트 · 카카오 로그인 · 내부 엔드포인트 보안 · 클라이언트 세션 복원'
     contribution: 'server PR 25건 · 이슈 30건 / client PR 15건 · 이슈 15건 / 문서 저장소 커밋 101건(팀 125건)'
     stack:
@@ -89,7 +89,7 @@ projects:
       - text: '운영에서 인증 없이 열려 있던 LLM 호출 엔드포인트를 공유 시크릿 필터로 차단하고 테스트 6건으로 고정'
         refs: 'server PR #79'
         case: 'jittaejap-internal-endpoint'
-      - text: '거래 파일이 20,000행을 넘으면 한 건도 저장하지 않고 400으로 거절해, 저장은 됐는데 화면만 실패하는 불일치 차단'
+      - text: '저장은 됐는데 화면만 실패하는 불일치를 막으려고, 거래 파일이 20,000행을 넘으면 한 건도 저장하지 않고 400으로 거절'
         refs: 'server PR #54'
 education:
   - school: "KB IT's Your Life 7기"
@@ -132,7 +132,7 @@ skills:
       - 'Vite'
       - 'TanStack Query'
       - 'Pinia'
-      - 'zod'
+      - 'Zod'
 # 최신순으로 적는다.
 awards:
   - name: "KB IT's Your Life 해커톤 장려상"

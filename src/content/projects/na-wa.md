@@ -23,7 +23,7 @@ stack:
   - Flyway
   - Vite 8
   - Pinia
-  - TanStack Vue Query 5
+  - TanStack Query 5
   - Vue I18n 11
   - Tailwind CSS 4
   - Zod
