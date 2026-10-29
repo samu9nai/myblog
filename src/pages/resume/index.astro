@@ -14,6 +14,8 @@ const { profile, highlights, experience, projects, education, skills, awards } =
 const careerMonths = totalMonths(experience, currentMonth())
 const githubLabel =
   new URL(profile.github).host + new URL(profile.github).pathname
+// 화면에서는 이미 블로그 안이라 인쇄본에만 주소를 보인다.
+const blog = Astro.site ? new URL(Astro.site).host : undefined
 ---
 
 <Layout
@@ -33,6 +35,13 @@ const githubLabel =
         class="hover:text-accent press-fade">
         {githubLabel}
       </a>
+      {blog && (
+        <a
+          href={Astro.site}
+          class="hidden print:inline">
+          {blog}
+        </a>
+      )}
       <PrintButton />
     </p>
     <p class="text-muted mt-6 leading-relaxed">
@@ -121,8 +130,9 @@ const githubLabel =
     </section>
   )}
 
+  {/* 인쇄본에서는 프로젝트 소속 줄이 수상을 대신해 A4 2쪽에 맞춘다. */}
   {awards.length > 0 && (
-    <section class="mt-10 print:mt-7 break-inside-avoid">
+    <section class="mt-10 print:mt-7 print:hidden break-inside-avoid">
       <h2 class="border-border border-b pb-2 text-lg font-bold">수상</h2>
       <ul class="mt-4 space-y-2">
         {awards.map(award => (
