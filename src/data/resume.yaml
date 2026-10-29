@@ -5,9 +5,9 @@ profile:
   title: '백엔드 개발자'
   email: 'samu9nai@gmail.com'
   github: 'https://github.com/samu9nai'
-  summary: 'Spring Framework(WAR)와 Spring Boot 두 환경에서 인증·동시성·집계 API를 설계하고, **고친 결과를 테스트로 증명**해 온 백엔드 개발자입니다. 팀 프로젝트 두 개(NA-WA 5명·4주, 소때잡 해커톤 5명·9일)에서 서버 초기 구성, **OAuth 2.0/OIDC 인증**, **결정론적 규칙 엔진**을 맡았습니다.'
+  summary: 'Spring Framework(WAR)와 Spring Boot 두 환경에서 인증 · 동시성 · 집계 API를 설계하고, **고친 결과를 테스트로 증명**해 온 백엔드 개발자입니다. 팀 프로젝트 두 개(NA-WA 5명 · 4주, 소때잡 해커톤 5명 · 9일)에서 서버 초기 구성, **OAuth 2.0/OIDC 인증**, **결정론적 규칙 엔진**을 맡았습니다.'
 highlights:
-  - text: '인증·보안 — Google·LINE·카카오 로그인의 인가 요청·코드 교환·콜백을 Spring Security의 자동 로그인 흐름 없이 구현하고, 회전형 refresh 토큰의 재사용 탐지와 브라우저 바인딩까지 하드닝'
+  - text: '인증 · 보안 — Google · LINE 로그인의 인가 요청 · 코드 교환 · 콜백을 Spring Security의 자동 로그인 흐름 없이 구현하고, 회전형 refresh 토큰의 재사용 탐지와 브라우저 바인딩까지 강화'
     short: 'OAuth/OIDC 로그인 흐름 구현과 refresh 토큰 재사용 탐지'
     source: 'NA-WA PR #41'
     link: 'https://github.com/T-ravelers/NA-WA/pull/41'
@@ -15,11 +15,11 @@ highlights:
     short: 'Hibernate lost update를 실제 DB에서 재현하고, 수정을 되돌려 검증'
     source: '소때잡 server PR #42'
     link: 'https://github.com/jittaejap/sottaejap-server/pull/42'
-  - text: '설계 경계 — AI는 입구(후보 제안)와 출구(설명)에만 두고, 후보 선별·묶음·롤업·판정은 서버 규칙 엔진의 결정론적 순수 함수로 구현'
+  - text: '설계 경계 — AI는 입구(후보 제안)와 출구(설명)에만 두고, 후보 선별 · 묶음 · 롤업 · 판정은 서버 규칙 엔진의 결정론적 순수 함수로 구현'
     short: '판단은 규칙 엔진에, AI는 후보 제안과 설명에만'
     source: '소때잡 server PR #6'
     link: 'https://github.com/jittaejap/sottaejap-server/pull/6'
-  - text: '검증 기록 — PR마다 자동 테스트·수동 검증·실행하지 못한 검증을 나눠 적고, 로컬 통과와 CI 통과를 구분'
+  - text: '검증 기록 — PR마다 자동 테스트 · 수동 검증 · 실행하지 못한 검증을 나눠 적고, 로컬 통과와 CI 통과를 구분'
     short: 'PR마다 실행한 검증과 못 한 검증을 나눠 기록'
     source: 'NA-WA PR #220'
     link: 'https://github.com/T-ravelers/NA-WA/pull/220'
@@ -30,7 +30,7 @@ projects:
     period:
       start: '2026-07'
       end: '2026-08'
-    context: "KB IT's Your Life 7기 최종 프로젝트 · 팀 T-ravelers (5명)"
+    context: "KB IT's Your Life 7기 최종 프로젝트 · 최우수상 · 팀 T-ravelers (5명)"
     role: '백엔드 초기 구성 · 소셜 로그인과 토큰 수명주기 · 여행 리포트 비교 API · 프론트엔드 공통 계층'
     contribution: 'PR 124건(팀 260건) · 이슈 146건 · 커밋 123건 · 리뷰 코멘트 131건(팀 1위, 2위 52건)'
     stack:
@@ -53,21 +53,21 @@ projects:
       - text: '로그아웃 응답이 유실돼도 세션이 되살아나지 않는 장벽 — 새로고침 · 다중 탭까지 refresh를 막고 Playwright E2E 3건으로 확인'
         refs: 'PR #167'
         case: 'na-wa-sign-out-barrier'
-      - text: '여행 리포트 비교 API — 동료(GROUP)는 현재 원장으로 다시 계산하고, 유사 사용자(SIMILAR)는 스냅샷 평균만 반환해 개인 노출 차단'
+      - text: '여행 리포트 비교 API — 동료(GROUP)는 현재 원장으로 다시 계산하고, 비슷한 여행자(SIMILAR)는 스냅샷 평균만 반환해 개인 노출 차단'
         refs: 'PR #400 · #416'
         case: 'na-wa-report-comparison'
-      - text: '타입과 다른 백엔드 응답이 화면에 퍼지기 전에 막는 요청별 Zod 응답 검증 — 지정한 호출만 검증하는 opt-in 구조, 공통 번들 +0.22kB · 별도 청크 17.51kB(gzip)'
+      - text: '타입과 다른 백엔드 응답이 화면에 퍼지기 전에 막는 요청별 Zod 응답 검증 — 지정한 호출만 검증하는 opt‑in 구조, 공통 번들 +0.22kB · 별도 청크 17.51kB(gzip)'
         refs: 'PR #188'
         case: 'na-wa-runtime-api-validation'
   - name: '소때잡'
     project: 'jittaejap'
-    summary: '며칠 지난 카드 소비를 돌아보며 지킬 소비와 줄일 소비를 가르는 소비 회고 서비스 (회고 · 만족도 지도 · 절감 제안)'
+    summary: '며칠 지난 카드 소비를 돌아보며 지킬 소비와 줄일 소비를 가르는 소비 회고 서비스'
     period:
       start: '2026-09'
       end: '2026-09'
-    context: "KB IT's Your Life 해커톤 · 팀 지때잡 (5명)"
-    role: '회고 규칙 엔진(후보 선별·묶음·롤업·판정) 구현 · 회고 API · 월간 리포트 · 카카오 로그인 · 내부 엔드포인트 보안 · 클라이언트 세션 복원'
-    contribution: 'server PR 25건 · 이슈 30건 / client PR 15건 · 이슈 15건 / 문서 저장소 커밋 101건(팀 125건)'
+    context: "KB IT's Your Life 해커톤 · 장려상 · 팀 지때잡 (5명)"
+    role: '회고 규칙 엔진(후보 선별 · 묶음 · 롤업 · 판정) 구현 · 회고 API · 월간 리포트 · 카카오 로그인 · 내부 엔드포인트 보안 · 클라이언트 세션 복원'
+    contribution: 'server PR 25건(팀원 데모 이식 5건 포함) · 이슈 30건 / client PR 15건 · 이슈 15건 / 문서 저장소 커밋 101건(팀 125건)'
     stack:
       - 'Java 21'
       - 'Spring Boot'
@@ -91,6 +91,28 @@ projects:
         case: 'jittaejap-internal-endpoint'
       - text: '저장은 됐는데 화면만 실패하는 불일치를 막으려고, 거래 파일이 20,000행을 넘으면 한 건도 저장하지 않고 400으로 거절'
         refs: 'server PR #54'
+  - name: '홍책방'
+    project: 'hongbookstore'
+    summary: '홍익대학교 학생끼리 중고 교재를 사고팔고 정보를 나누는 플랫폼'
+    period:
+      start: '2025-03'
+      end: '2025-10'
+    context: '2025학년도 컴퓨터공학과 졸업 프로젝트 · 장려상 · 팀 4명'
+    role: '인증 백엔드 · 판매글 · 유해 표현 추론 서버와 연동 · 배포'
+    contribution: '커밋 98건(팀 293건, 팀 활동 기간) · 유해 표현 추론 서버 커밋 20건 전부'
+    stack:
+      - 'Java 21'
+      - 'Spring Boot 3.5'
+      - 'Spring Security'
+      - 'Spring Data JPA'
+      - 'MySQL'
+      - 'Python · Flask'
+      - 'GCP Cloud Run'
+    work:
+      - text: '운영에서만 깨지던 소셜 로그인 수정 — 서버리스 프록시로 OAuth 경로를 백엔드에 넘기고, 인가 요청 정보를 HttpOnly 쿠키에 180초 동안 보관'
+        refs: '커밋 38360eb · 5838882 · 65cd09c'
+      - text: '팀원이 학습한 유해 표현 모델을 Flask 추론 서버로 Cloud Run에 배포하고, 판매글 · 댓글 · 채팅 · 후기를 저장 전에 검사 — 필드마다 차단과 경고를 나눔'
+        refs: 'PR #34'
 education:
   - school: "KB IT's Your Life 7기"
     start: '2026-03'
@@ -111,7 +133,7 @@ skills:
   - group: 'Data'
     items:
       - 'MySQL 8.4'
-      - 'PostgreSQL 18 + pgvector'
+      - 'PostgreSQL 18'
       - 'Redis 7'
       - 'Flyway'
       - 'HikariCP'
