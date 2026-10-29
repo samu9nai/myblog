@@ -1,6 +1,18 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { formatMonths, totalMonths } from './duration.ts'
+import { formatMonths, formatPeriod, totalMonths } from './duration.ts'
+
+await test('formatPeriod: 시작과 끝을 점으로 잇는다', () => {
+  assert.equal(
+    formatPeriod({ start: '2026-07', end: '2026-08' }),
+    '2026.07 – 2026.08'
+  )
+  assert.equal(formatPeriod({ start: '2026-10' }), '2026.10 – 진행 중')
+})
+
+await test('formatPeriod: 같은 달에 끝난 기간은 한 번만 쓴다', () => {
+  assert.equal(formatPeriod({ start: '2026-09', end: '2026-09' }), '2026.09')
+})
 
 await test('totalMonths: 시작 달과 끝 달을 모두 센다', () => {
   assert.equal(

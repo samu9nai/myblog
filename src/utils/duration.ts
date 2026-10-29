@@ -39,3 +39,11 @@ export function formatMonths(months: number) {
     .filter(Boolean)
     .join(' ')
 }
+
+const dotted = (month: string) => month.replace('-', '.')
+
+/** 2026.07 – 2026.08처럼 쓴다. 같은 달에 끝났으면 2026.09처럼 한 번만 쓴다. */
+export const formatPeriod = ({ start, end }: Period) => {
+  if (end === start) return dotted(start)
+  return `${dotted(start)} – ${end ? dotted(end) : '진행 중'}`
+}

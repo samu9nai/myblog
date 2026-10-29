@@ -67,13 +67,7 @@ export async function getProjects() {
   return projects.sort((a, b) => a.data.order - b.data.order)
 }
 
-const month = (value: string) => value.replace('-', '.')
-
-export const formatPeriod = ({
-  start,
-  end
-}: CollectionEntry<'projects'>['data']['period']) =>
-  `${month(start)} – ${end ? month(end) : '진행 중'}`
+export { formatPeriod } from './duration'
 
 export const formatKind = (data: CollectionEntry<'projects'>['data']) =>
   data.kind === 'team' ? `팀 ${data.teamSize}명` : '개인'
