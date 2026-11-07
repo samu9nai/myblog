@@ -12,17 +12,19 @@ const { highlights } = Astro.props
   {highlights.map(highlight => (
     <li>
       {highlight.text}
-      {highlight.link ? (
-        <a
-          href={highlight.link}
-          class="text-muted hover:text-accent ml-2 font-mono text-xs whitespace-nowrap underline underline-offset-4 press-fade">
-          {highlight.source ?? '근거'}
-        </a>
-      ) : (
-        highlight.source && (
-          <span class="text-muted ml-2 font-mono text-xs whitespace-nowrap">
-            {highlight.source}
-          </span>
+      {[highlight, ...highlight.additionalSources].map(({ link, source }) =>
+        link ? (
+          <a
+            href={link}
+            class="text-muted hover:text-accent ml-2 font-mono text-xs whitespace-nowrap underline underline-offset-4 press-fade">
+            {source ?? '근거'}
+          </a>
+        ) : (
+          source && (
+            <span class="text-muted ml-2 font-mono text-xs whitespace-nowrap">
+              {source}
+            </span>
+          )
         )
       )}
     </li>

@@ -2,6 +2,7 @@
 title: '타입 선언을 실제 응답 검증으로 연결하기'
 description: 'TypeScript 타입과 다른 백엔드 응답이 화면 깊숙이 전파되던 문제를, 기존 API 전체를 깨뜨리지 않는 요청별 Zod 검증과 feature가 소유하는 스키마로 차단했습니다.'
 pubDate: 2026-08-24
+updatedDate: 2026-11-07
 tags:
   - na-wa
   - zod
@@ -35,17 +36,18 @@ TypeScript의 제네릭은 컴파일 후 사라지므로 `get<Foo>()`가 실제 
 
 ```mermaid
 flowchart TD
-    F[Feature API] -->|responseSchema 지정| A[Axios 요청]
+    F[Feature API] --> A[Axios 요청]
     A --> I[공용 success interceptor]
-    I --> P{safeParse 성공?}
-    P -->|예| R[원본 payload 반환]
+    I --> D{responseSchema 지정?}
+    D -->|아니오| R[원본 payload 반환]
+    D -->|예| P{safeParse 성공?}
+    P -->|예| R
     P -->|아니오| E[경로·코드·기대값만 정규화]
     E --> N[NormalizedApiError UNKNOWN]
     N --> U[기존 UI 오류 처리]
-    X[스키마 미지정 요청] --> A
 ```
 
-공용 Axios config에 선택 항목 `responseSchema`를 추가하고 success interceptor에서만 `safeParse`를 실행했습니다. 검증에 성공해도 Zod의 변환 결과가 아니라 원본 payload를 반환해 숨은 정규화를 만들지 않았습니다. 검증에 실패하면 query와 hash를 제거한 URL과 issue의 path·code·expected만 남기고 응답 본문은 오류 메시지에 넣지 않았습니다. 이 예외는 기존 `NormalizedApiError`로 합쳐지므로 호출부의 오류 처리를 그대로 재사용합니다.
+공용 Axios config에 선택 항목 `responseSchema`를 추가했습니다. 스키마가 없는 요청은 성공 응답의 원본 payload를 바로 반환합니다. 스키마를 지정한 요청만 success interceptor에서 `safeParse`로 검사하고, 통과하면 원본 payload를 반환합니다. 검증에 실패하면 query와 hash를 제거한 URL과 issue의 path·code·expected만 남기고 응답 본문은 오류 메시지에 넣지 않았습니다. 이 예외는 기존 `NormalizedApiError`로 합쳐지므로 호출부의 오류 처리를 그대로 재사용합니다.
 
 스키마는 Explore와 Wallet feature가 각각 소유합니다. 상태·이벤트 종류처럼 모르는 값이 들어오면 잘못 동작하는 필드는 enum으로 엄격히 막았습니다. 서버가 나중에 새 값을 보내도 안전하게 표시할 수 있는 필드는 string과 UI fallback을 유지했습니다. Jackson이 반환할 수 있는 문자열/배열 날짜와 nullable 목록도 실제 계약에 맞게 모델링했습니다.
 
