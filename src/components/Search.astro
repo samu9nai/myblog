@@ -51,6 +51,8 @@ import Button from '@/components/ui/Button.astro'
 </dialog>
 
 <script>
+  import { getSearchAction } from '@/utils/search-key'
+
   interface Entry {
     kind: 'post' | 'project'
     title: string
@@ -176,16 +178,11 @@ import Button from '@/components/ui/Button.astro'
   input.addEventListener('input', () => void update())
 
   input.addEventListener('keydown', event => {
-    if (event.key === 'ArrowDown') {
-      event.preventDefault()
-      move(1)
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault()
-      move(-1)
-    } else if (event.key === 'Enter' && results.length > 0) {
-      event.preventDefault()
-      location.href = results[active].url
-    }
+    const action = getSearchAction(event, results.length > 0)
+    if (action === undefined) return
+    event.preventDefault()
+    if (action === 'open') location.href = results[active].url
+    else move(action)
   })
 
   // 바깥(배경)을 누르면 닫는다.
