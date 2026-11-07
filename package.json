@@ -2,7 +2,7 @@
   "name": "samu9nai",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@12.8.1",
+  "packageManager": "pnpm@12.17.0",
   "engines": {
     "node": ">=24.22.1 <25"
   },
@@ -21,7 +21,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "0.4.4",
+    "@astrojs/markdown-satteri": "0.4.6",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource/maple-mono": "^5.3.0",
@@ -29,7 +29,7 @@
     "astro": "^7.4.1",
     "astro-expressive-code": "^0.44.3",
     "mermaid": "^12.2.0",
-    "satori": "^0.33.5",
+    "satori": "^0.63.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3"
   },
