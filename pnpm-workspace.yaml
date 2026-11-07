@@ -1,4 +1,3 @@
-# pnpm은 허용한 패키지의 설치 스크립트만 실행한다.
 allowBuilds:
   # Vite가 쓰는 esbuild 바이너리를 설치 시점에 검증한다.
   esbuild: true
@@ -10,4 +9,4 @@ allowBuilds:
 overrides:
   # satori 0.33이 쓰는 @shuding/opentype.js는 fflate 0.7.3에 묶여 있다.
   # GHSA-px8p-9vwx-vf98(ZIP64 무한 루프)는 0.7.5에서 고쳐졌다. satori 0.63으로 올리면 지운다.
-  fflate@<0.7.5: 0.7.5
+  fflate@<0.7.5: 0.8.3
